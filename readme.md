@@ -2,10 +2,10 @@
 
 ## Getting started
 
-Create a project based on this boilerplate.
+Clone react-ts-extension project
 
 ```
-$ npx degit https://github.com/sivertschou/react-typescript-chrome-extension-boilerplate.git#christmas <project-name>
+$ git clone https://github.com/ProgPrak21/react-ts-extension
 ```
 
 Navigate to the project directory and install the dependencies.
