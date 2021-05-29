@@ -18,9 +18,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       const { type } = request;
       console.log(host);
       //send request to content script
+      console.log("Sending Request to content script");
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         tabs.forEach((tab) => {
           if (tab.id === tabId) {
+            console.log("Tab Status ===> ", tab.status);
             chrome.tabs.sendMessage(tab.id, { host, type });
           }
         });

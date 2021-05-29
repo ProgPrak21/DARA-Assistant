@@ -5,6 +5,7 @@ export const StatusInfo = () => {
 
   // Listen to messages by runtime.sendMessages
   chrome.runtime.onMessage.addListener((request) => {
+    console.log("Message in StatusInfo", request);
     if (request === "Pending!") setStatus(request);
     if (request === "Ready!") setStatus(request);
   });
