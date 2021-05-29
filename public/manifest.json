@@ -1,6 +1,6 @@
 {
-  "name": "Chrome Extension Boilerplate",
-  "description": "Chrome Extension boilerplate created with React Typescript.",
+  "name": "DARA",
+  "description": "Data Automated Request Analysis",
   "manifest_version": 2,
   "version": "1.0.0",
   "icons": {
