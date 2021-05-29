@@ -62,15 +62,17 @@ export const facebookCheck = () => {
 };
 
 export const facebookDownload = () => {
-  Array.from(document.querySelectorAll("iframe")).forEach((iframe) => {
-    iframe.contentWindow &&
+  let downloadBtn: HTMLElement = Array.from(
+    document.querySelectorAll("iframe")
+  ).map(
+    (iframe) =>
+      iframe.contentWindow &&
       Array.from(
         iframe.contentWindow.document.body.querySelectorAll(
           'div[data-hover="tooltip"]'
         )
-      )
-        ?.find((e) => e?.textContent?.startsWith("Download"))
-        ?.querySelector("a")
-        ?.click();
-  });
+      )?.find((e) => e?.textContent?.startsWith("Download"))
+  )[0] as HTMLElement;
+
+  downloadBtn.click();
 };
