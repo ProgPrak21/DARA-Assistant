@@ -1,39 +1,29 @@
 import * as React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { Btn } from "./components/Button";
-import { StatusInfo } from "./components/StatusInfo";
-import { RequestInfo } from "./components/RequestInfo";
-import { DownloadInfo } from "./components/DownloadInfo";
-import { Grid } from "@material-ui/core";
+import { Facebook } from "./components/facebook/Facebook";
 
 const App = () => {
+  const [url, setUrl] = React.useState<string>("");
+
+  //Get current URL
+  React.useEffect(() => {
+    const queryInfo = { active: true, lastFocusedWindow: true };
+
+    chrome.tabs &&
+      chrome.tabs.query(queryInfo, (tabs) => {
+        const url = tabs[0].url;
+        setUrl(url ?? "");
+      });
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
       </header>
       <body className="App-body">
-        <Grid container spacing={3}>
-          <Grid style={{ textAlign: "left" }} item xs={6}>
-            <Btn type={"request"} />
-          </Grid>
-          <Grid item xs={6}>
-            <RequestInfo />
-          </Grid>
-          <Grid style={{ textAlign: "left" }} item xs={6}>
-            <Btn type={"check"} />
-          </Grid>
-          <Grid item xs={6}>
-            <StatusInfo />
-          </Grid>
-          <Grid style={{ textAlign: "left" }} item xs={6}>
-            <Btn type={"download"} />
-          </Grid>
-          <Grid item xs={6}>
-            <DownloadInfo />
-          </Grid>
-        </Grid>
+        {url.includes("facebook") && <Facebook />}
       </body>
     </div>
   );

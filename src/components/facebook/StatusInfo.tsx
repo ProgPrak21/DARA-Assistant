@@ -6,14 +6,16 @@ export const StatusInfo = () => {
   // Listen to messages by runtime.sendMessages
   chrome.runtime.onMessage.addListener((request) => {
     console.log("Message in StatusInfo", request);
-    if (request === "Pending!") setStatus(request);
-    if (request === "Ready!") setStatus(request);
+    if (request.includes("facebook_request")) {
+      const result = request.split("_")[2];
+      setStatus(result);
+    }
   });
 
   return (
     <div>
       {status
-        ? `Your data request is ${status}`
+        ? `Your data request is ${status}!`
         : `Click CHECK to check the status of your request`}
     </div>
   );

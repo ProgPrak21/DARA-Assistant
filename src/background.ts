@@ -3,7 +3,7 @@ console.log("Hello from background script!");
 
 let services = ["facebook"];
 
-// Listener for the messages from extension
+// Listener for the messages from extension ()
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log("Message received in background.js!", request);
 
@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (tab.status === "complete") {
       console.log("The new tab has been loaded");
 
-      // check for which service
+      // check for which service, type of request
       const { host } = new URL(tab.url ?? "");
       const { type } = request;
       console.log(host);

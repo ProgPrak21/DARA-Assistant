@@ -40,8 +40,8 @@
 
 .App-body {
   background-color: #282c34;
-  width: 250px;
-  height: 150px;
+  min-width: 250px;
+  min-height: 150px;
   color: aliceblue;
   padding: 20px;
 }
