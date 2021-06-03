@@ -1,4 +1,4 @@
-export const facebookRequest = () => {
+export const request = () => {
   console.log("Executing Facebook Request!");
   //Select all iframes
   Array.from(document.querySelectorAll("iframe")).forEach((iframe) => {
@@ -35,7 +35,7 @@ export const facebookRequest = () => {
   });
 };
 
-export const facebookCheck = () => {
+export const check = () => {
   console.log("Executing Facebook Check!");
   let result;
   let pending = Array.from(document.querySelectorAll("iframe")).map(
@@ -76,7 +76,7 @@ export const facebookCheck = () => {
   chrome.runtime.sendMessage({requestState: result});
 };
 
-export const facebookDownload = () => {
+export const download = () => {
   console.log("Executing Facebook Download!");
   let downloadBtn: HTMLElement = Array.from(
     document.querySelectorAll("iframe")

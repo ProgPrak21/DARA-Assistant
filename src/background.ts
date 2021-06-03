@@ -1,63 +1,48 @@
-async function injectFunction(tabId: number, functionName: Function) {
+function injectFunction(tabId: number, functionName: Function) {
   const funString = functionName.toString();
   const funBody = funString.slice(funString.indexOf("{") + 1, funString.lastIndexOf("}"));
-  await chrome.tabs.executeScript(tabId, {
+  chrome.tabs.executeScript(tabId, {
     code: funBody,
   });
 }
 
-import {
-  facebookRequest,
-  facebookCheck,
-  facebookDownload,
-} from "./scripts/facebook";
+// This file is ran as a background script
+console.log("Hello from background script!");
 
-try {
+// Listener for the messages from extension ()
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log("Message received in background!", message);
+  if (['request', 'check', 'download'].includes(message.type)) {
+    // Listen for tabs update
+    chrome.tabs.onUpdated.addListener(async function onUpdated(tabId, changeInfo, tab) {
+      //check if the tab has been loaded
+      if (changeInfo.status === "complete" && tabId === message.id) {
+        console.log("The new tab has been loaded");
 
-  // This file is ran as a background script
-  console.log("Hello from background script!");
+        // check for which service, type of message
+        const { host } = new URL(tab.url ?? "");
+        const { type } = message;
+        console.log(host);
+        const connector = await import(`./connectors/${host}.ts`);  
 
-  let services = ["facebook"];
-
-  // Listener for the messages from extension ()
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log("Message received in background.js!", message);
-    if (['request', 'check', 'download'].includes(message.type)) {
-      // Listen for tabs update
-      chrome.tabs.onUpdated.addListener(async function onUpdated(tabId, changeInfo, tab) {
-        //check if the tab has been loaded
-        if (tab.status === "complete") {
-          console.log("The new tab has been loaded");
-
-          // check for which service, type of message
-          const { host } = new URL(tab.url ?? "");
-          const { type } = message;
-          console.log(host);
-
-          if (host === "www.facebook.com") {
-            if (type === "request") {
-              console.log("Injecting request script");
-              await injectFunction(tabId, facebookRequest);
-            }
-
-            if (type === "check") {
-              console.log("Injecting check script");
-              //let result = await injectFunction(tab, facebookCheck);
-              await injectFunction(tabId, facebookCheck);
-              //console.log("result ===> ", result);
-              //chrome.runtime.sendMessage(result);
-            }
-
-            if (type === "download") {
-              console.log("Injecting download script");
-              await injectFunction(tabId, facebookDownload);
-            }
+        if (host === "www.facebook.com") {
+          if (type === "request") {
+            console.log("Injecting request script");
+            injectFunction(tabId, connector.request);
           }
-          chrome.tabs.onUpdated.removeListener(onUpdated);
+
+          if (type === "check") {
+            console.log("Injecting check script");
+            injectFunction(tabId, connector.check);
+          }
+
+          if (type === "download") {
+            console.log("Injecting download script");
+            injectFunction(tabId, connector.download);
+          }
         }
-      });
-    }
-  });
-} catch (e) {
-  console.error(e);
-}
+        chrome.tabs.onUpdated.removeListener(onUpdated);
+      }
+    });
+  }
+});
