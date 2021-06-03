@@ -22,25 +22,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // check for which service, type of message
         const { host } = new URL(tab.url ?? "");
         const { type } = message;
-        console.log(host);
-        const connector = await import(`./connectors/${host}.ts`);  
+        const connector = await import(`./connectors/${host}.ts`);
 
-        if (host === "www.facebook.com") {
-          if (type === "request") {
+        switch(type) {
+          case "request":
             console.log("Injecting request script");
             injectFunction(tabId, connector.request);
-          }
-
-          if (type === "check") {
+            break;
+          case "check":
             console.log("Injecting check script");
             injectFunction(tabId, connector.check);
-          }
-
-          if (type === "download") {
+            break;
+          case "download":
             console.log("Injecting download script");
             injectFunction(tabId, connector.download);
-          }
+            break;
         }
+
         chrome.tabs.onUpdated.removeListener(onUpdated);
       }
     });
