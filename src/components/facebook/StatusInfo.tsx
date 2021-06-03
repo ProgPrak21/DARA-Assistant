@@ -4,10 +4,10 @@ export const StatusInfo = () => {
   const [status, setStatus] = React.useState<string | undefined>("");
 
   // Listen to messages by runtime.sendMessages
-  chrome.runtime.onMessage.addListener((request) => {
-    console.log("Message in StatusInfo", request);
-    if (request.includes("facebook_request")) {
-      const result = request.split("_")[2];
+  chrome.runtime.onMessage.addListener((message) => {
+    console.log("Message in StatusInfo", message);
+    if (message.requestState) {
+      const result = message.requestState;
       setStatus(result);
     }
   });

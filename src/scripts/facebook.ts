@@ -64,16 +64,16 @@ export const facebookCheck = () => {
 
   if (!pending.includes(undefined) && pending.length === 1) {
     console.log("Request is pending!");
-    //alert("Pending!");
-    result = "fb_request_pending";
+    result = "pending";
   }
   if (!ready.includes(undefined) && ready.length === 1) {
     console.log("Request is Ready");
-    //alert("Ready!");
-    result = "facebook_request_ready";
+    result = "ready";
   } else {
-    result = "facebook_request_none";
+    result = "none";
   }
+  // Send message to background that our request is ready
+  chrome.runtime.sendMessage({requestState: result});
 };
 
 export const facebookDownload = () => {
