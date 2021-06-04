@@ -4,9 +4,7 @@ export const request = () => {
   Array.from(document.querySelectorAll("iframe")).forEach((iframe) => {
     if (iframe.contentWindow) {
       //Select Format
-      Array.from(
-        iframe.contentWindow.document.body.querySelectorAll("label")
-      )
+      Array.from(iframe.contentWindow.document.body.querySelectorAll("label"))
         ?.find((e) => e?.textContent?.startsWith("Format"))
         ?.querySelector("a")
         ?.click();
@@ -62,6 +60,7 @@ export const check = () => {
       ).find((e) => e.textContent?.startsWith("Download"))
   );
 
+  result = "none";
   if (!pending.includes(undefined) && pending.length === 1) {
     console.log("Request is pending!");
     result = "pending";
@@ -69,11 +68,9 @@ export const check = () => {
   if (!ready.includes(undefined) && ready.length === 1) {
     console.log("Request is Ready");
     result = "ready";
-  } else {
-    result = "none";
   }
   // Send message to background that our request is ready
-  chrome.runtime.sendMessage({requestState: result});
+  chrome.runtime.sendMessage({ requestState: result });
 };
 
 export const download = () => {
