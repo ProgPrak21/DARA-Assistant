@@ -14,8 +14,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // Listen for tabs update
     chrome.tabs.onUpdated.addListener(async function onUpdated(tabId, changeInfo, tab) {
       //check if the tab has been loaded
-      if (changeInfo.status === "complete" && tabId === message.id) {
-        console.log("Our tab has been loaded.");
+      console.log("Received onUpdated event.", tab, changeInfo);
+      if (tab.status === "complete" && changeInfo.status === "complete" && tabId === message.id) {
+        console.log("Our tab has been loaded.", tab, changeInfo);
 
         const { host } = new URL(tab.url ?? "");
         const { type } = message;
