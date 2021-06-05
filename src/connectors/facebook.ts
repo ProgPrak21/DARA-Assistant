@@ -39,26 +39,27 @@ export const check = async () => {
   const pause = (time: number) =>
     new Promise((resolve) => setTimeout(resolve, time));
 
-  let allIframes = Array.from(document.querySelectorAll("iframe"));
+  //Get all the iframes, and filter out the ads
+  const getIframes = () => {
+    return Array.from(document.querySelectorAll("iframe")).filter(
+      (e) => !e.src.includes("common/referer_frame.php")
+    );
+  };
 
-  //check if the iframes are loaded
+  let allIframes = getIframes();
+
+  //check if the iframes are loaded, and retry for 5 times if not
   if (!allIframes.length) {
     for (let i = 0; i < 5; i++) {
-      console.log("check number ", i);
-      allIframes = Array.from(document.querySelectorAll("iframe"));
+      allIframes = getIframes();
       await pause(2000);
-      console.log(allIframes.length);
-      if (allIframes.length > 1) break;
+      if (allIframes.length) break;
     }
   }
 
-  //filter out the ads if they exist
-  const iframe = allIframes.filter(
-    (e) => !e.src.includes("/common/referer_frame.php")
-  );
-
   let result;
-  let pending = iframe.map(
+
+  let pending = allIframes.map(
     (iframe) =>
       iframe.contentWindow &&
       Array.from(
@@ -72,7 +73,7 @@ export const check = async () => {
       )
   );
 
-  let ready = iframe.map(
+  let ready = allIframes.map(
     (iframe) =>
       iframe.contentWindow &&
       Array.from(
