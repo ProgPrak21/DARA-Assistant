@@ -1,33 +1,66 @@
-// This file is ran as a background script
+//Inject function asynchronously
+function injectFunction(tabId: number, functionName: Function) {
+  const functionString = functionName.toString();
+  const functionBody = functionString.slice(
+    functionString.indexOf("{") + 1,
+    functionString.lastIndexOf("}")
+  );
+  chrome.tabs.executeScript(tabId, {
+    code: `(async () => {${functionBody}})()`,
+  });
+}
+
+async function connectorExists(serviceName: string) {
+  const connector = await import(`./connectors/${serviceName}.ts`).catch(
+    function () {
+      return false;
+    }
+  );
+  return connector;
+}
+
 console.log("Hello from background script!");
 
-let services = ["facebook"];
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log("Message received in background!", message);
+  if (["request", "check", "download"].includes(message.type)) {
+    // Listen for tabs update
+    chrome.tabs.onUpdated.addListener(async function onUpdated(
+      tabId,
+      changeInfo,
+      tab
+    ) {
+      //check if the tab has been loaded
+      console.log("Received onUpdated event.", tab, changeInfo);
+      if (
+        tab.status === "complete" &&
+        changeInfo.status === "complete" &&
+        tabId === message.id
+      ) {
+        console.log("Our tab has been loaded.", tab, changeInfo);
 
-// Listener for the messages from extension ()
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log("Message received in background.js!", request);
+        const { hostname } = new URL(tab.url ?? "");
+        const hostNameSplited = hostname.split(".");
+        let part: string;
+        let connector: any;
 
-  // Listen for tabs update
-  chrome.tabs.onUpdated.addListener(function onUpdated(tabId, changeInfo, tab) {
-    //check if the tab has been loaded
-    if (tab.status === "complete") {
-      console.log("The new tab has been loaded");
+        for (part of hostNameSplited) {
+          connector = await connectorExists(part);
+          if (connector !== false) {
+            console.log(`Found matching ${part} connector.`);
+            const { type } = message;
 
-      // check for which service, type of request
-      const { host } = new URL(tab.url ?? "");
-      const { type } = request;
-      console.log(host);
-      //send request to content script
-      console.log("Sending Request to content script");
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        tabs.forEach((tab) => {
-          if (tab.id === tabId) {
-            console.log("Tab Status ===> ", tab.status);
-            chrome.tabs.sendMessage(tab.id, { host, type });
+            console.log(`Injecting ${type} script`);
+            injectFunction(tabId, connector[type]);
+            break;
           }
-        });
-      });
-      chrome.tabs.onUpdated.removeListener(onUpdated);
-    }
-  });
+        }
+        if (connector === false) {
+          console.log("Could not find connector for the requested domain.");
+        }
+
+        chrome.tabs.onUpdated.removeListener(onUpdated);
+      }
+    });
+  }
 });
