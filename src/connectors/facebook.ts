@@ -52,8 +52,13 @@ export const check = async () => {
     }
   }
 
+  //filter out the ads if they exist
+  const iframe = allIframes.filter(
+    (e) => !e.src.includes("/common/referer_frame.php")
+  );
+
   let result;
-  let pending = Array.from(document.querySelectorAll("iframe")).map(
+  let pending = iframe.map(
     (iframe) =>
       iframe.contentWindow &&
       Array.from(
@@ -67,7 +72,7 @@ export const check = async () => {
       )
   );
 
-  let ready = Array.from(document.querySelectorAll("iframe")).map(
+  let ready = iframe.map(
     (iframe) =>
       iframe.contentWindow &&
       Array.from(
