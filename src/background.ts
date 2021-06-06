@@ -1,3 +1,5 @@
+import { config } from './connectors/.'
+
 //Inject function asynchronously
 function injectFunction(tabId: number, functionName: Function) {
   const functionString = functionName.toString();
@@ -63,4 +65,27 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
     });
   }
+});
+
+chrome.runtime.onInstalled.addListener(function() {
+  // Replace all rules ...
+  chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+    // With a new rules
+    let connector;
+    let conditions = [];
+    for (connector of config.availableConnectors) {
+      conditions.push(
+        new chrome.declarativeContent.PageStateMatcher({
+          pageUrl: { hostContains: connector.hostname },
+        })
+      )
+    }
+      chrome.declarativeContent.onPageChanged.addRules([
+        {
+          conditions,
+          // Show the extension's page action.
+          actions: [ new chrome.declarativeContent.ShowPageAction() ]
+        }
+      ]);
+  });
 });
