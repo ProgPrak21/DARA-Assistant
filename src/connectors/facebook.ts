@@ -1,3 +1,6 @@
+export const name = 'facebook';
+export const hostname = 'facebook.com';
+
 export const request = async () => {
   console.log("Executing Facebook Request!");
 

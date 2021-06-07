@@ -1,9 +1,32 @@
-import {buildConfig} from  './connectors/.';
+import { buildConfig } from './connectors/.';
 
-let connectors:any[] = [];
+let connectors: any[] = [];
 // initialize extension
-chrome.runtime.onInstalled.addListener(async () => {
+chrome.runtime.onInstalled.addListener(async function () {
   connectors = await buildConfig();
+
+  // Implement url based extension activation via page_action 
+  // Replace all rules
+  chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
+    // With new rules
+    let connector;
+    let conditions = [];
+    // For every available connector
+    for (connector of connectors) {
+      conditions.push(
+        new chrome.declarativeContent.PageStateMatcher({
+          pageUrl: { hostContains: connector.hostname },
+        })
+      )
+    }
+    chrome.declarativeContent.onPageChanged.addRules([
+      {
+        conditions,
+        // Show the extension's page action.
+        actions: [new chrome.declarativeContent.ShowPageAction()]
+      }
+    ]);
+  });
 });
 
 //Inject function asynchronously
@@ -31,7 +54,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       tab
     ) {
       //check if the tab has been loaded
-      console.log("Received onUpdated event.", tab, changeInfo);
+      //console.log("Received onUpdated event.", tab, changeInfo);
       if (
         tab.status === "complete" &&
         changeInfo.status === "complete" &&
@@ -41,47 +64,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         // Now we need to find out which connector to use
         const { hostname } = new URL(tab.url ?? "");
-        
-        for (let connector of connectors) {
-          if (hostname.includes(connector.hostname)) {
-            console.log(`Found matching ${connector.name} connector.`);
-            const { type } = message;
+        const connector = connectors.find(connector => hostname.includes(connector.hostname));
+        console.log(connector);
+        if (connector) {
+          console.log(`Found matching ${connector.name} connector.`);
+          const { type } = message;
 
-            console.log(`Injecting ${type} script`);
-            injectFunction(tabId, connector[type]);
-            break;
-          }
+          console.log(`Injecting ${type} script`);
+          injectFunction(tabId, connector[type]);
+          chrome.tabs.onUpdated.removeListener(onUpdated);
+        } else {
+          console.log(`Could not find connector matching ${hostname}.`);
         }
-
-        chrome.tabs.onUpdated.removeListener(onUpdated);
       }
     });
   }
-});
-
-/**
- * Implement url based extension activation via page_action 
- */
-chrome.runtime.onInstalled.addListener(function() {
-  // Replace all rules
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-    // With new rules
-    let connector;
-    let conditions = [];
-    // For every available connector
-    for (connector of config) {
-      conditions.push(
-        new chrome.declarativeContent.PageStateMatcher({
-          pageUrl: { hostContains: connector.hostname },
-        })
-      )
-    }
-      chrome.declarativeContent.onPageChanged.addRules([
-        {
-          conditions,
-          // Show the extension's page action.
-          actions: [ new chrome.declarativeContent.ShowPageAction() ]
-        }
-      ]);
-  });
 });
