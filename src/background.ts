@@ -67,12 +67,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+/**
+ * Implement url based extension activation via page_action 
+ */
 chrome.runtime.onInstalled.addListener(function() {
-  // Replace all rules ...
+  // Replace all rules
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-    // With a new rules
+    // With new rules
     let connector;
     let conditions = [];
+    // For every available connector
     for (connector of config.availableConnectors) {
       conditions.push(
         new chrome.declarativeContent.PageStateMatcher({
