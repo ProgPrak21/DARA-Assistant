@@ -1,5 +1,6 @@
 export const name = 'facebook';
 export const hostname = 'facebook.com';
+export const requestUrl = 'https://www.facebook.com/dyi/?referrer=yfi_settings';
 
 export const request = async () => {
   console.log("Executing Facebook Request!");

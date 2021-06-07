@@ -1,3 +1,7 @@
+export * as facebook from './facebook';
+// export * as instagram from './instagram';
+
+
 let connectors:any[] = [
     'facebook',
     'instagram'

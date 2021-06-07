@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Btn } from "./Button";
-import { RequestInfo } from "./RequestInfo";
 import { StatusInfo } from "./StatusInfo";
 import { Grid } from "@material-ui/core";
 
@@ -12,10 +11,10 @@ export const Popup = () => {
           DARA
         </Grid>
         <Grid style={{ textAlign: "left" }} item xs={6}>
-          <Btn url={""} type={"request"} />
+          <Btn type={"request"} />
         </Grid>
         <Grid item xs={6}>
-          <RequestInfo />
+          <StatusInfo />
         </Grid>
       </Grid>
     </>

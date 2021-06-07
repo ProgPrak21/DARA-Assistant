@@ -1,14 +1,24 @@
 import * as React from "react";
 import { Button } from "@material-ui/core";
+import { buildConfig } from '../connectors/.';
 
 type props = {
   type: string;
-  url: string;
 };
 
-export const Btn: React.FC<props> = ({ url, type }) => {
+async function getRequestUrl(url:string) {
+  const connectors = await buildConfig();
+  const { hostname } = new URL(url);
+  console.log(connectors);
+  const connector = connectors.find(connector => hostname.includes(connector.hostname));
+  return connector.requestUrl
+}
+
+export const Btn: React.FC<props> = ({ type }) => {
   const onClick = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+      const tab = tabs[0];
+      const url = tab.url ? await getRequestUrl(tab.url) : false;
       chrome.tabs.update(
         {
           url: url,
