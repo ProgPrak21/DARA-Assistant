@@ -1,8 +1,8 @@
 import { buildConfig } from './connectors/.';
 
 // Inject function asynchronously
-function injectFunction(tabId: number, functionName: Function) {
-  const functionString = functionName.toString();
+function injectFunction(tabId: number, f: Function) {
+  const functionString = f.toString();
   const functionBody = functionString.slice(
     functionString.indexOf("{") + 1,
     functionString.lastIndexOf("}")
@@ -45,7 +45,7 @@ chrome.runtime.onInstalled.addListener(async function () {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("Message received in background!", message);
-  if (["request", "check", "download"].includes(message.type)) {
+  if (["request", "download"].includes(message.type)) {
     // We need to find out which connector to use
     const { hostname } = new URL(message.url ?? "");
     const connector = connectors.find(connector => hostname.includes(connector.hostname));
@@ -67,7 +67,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             console.log("Our tab has been loaded.", tab, changeInfo);
             const { type } = message;
 
-            console.log(`Injecting ${type} script`);
+            switch (type) {
+              case 'download':
+                console.log(`Injecting check script`);
+                injectFunction(tabId, connector.check);
+                chrome.runtime.onMessage.addListener(function onMessage(message) {
+                  if (message.requestState === 'ready') {
+                    chrome.runtime.onMessage.removeListener(onMessage);
+                    console.log(`Injecting download script`);
+                    injectFunction(tabId, connector.download);
+                  }
+                });
+                break;
+              case 'request':
+                console.log(`Injecting request script`);
+                injectFunction(tabId, connector.request);
+            }
+
+            
             injectFunction(tabId, connector[type]);
             chrome.tabs.onUpdated.removeListener(onUpdated);
           }
