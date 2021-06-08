@@ -1,7 +1,21 @@
 import { buildConfig } from './connectors/.';
 
+// Inject function asynchronously
+function injectFunction(tabId: number, functionName: Function) {
+  const functionString = functionName.toString();
+  const functionBody = functionString.slice(
+    functionString.indexOf("{") + 1,
+    functionString.lastIndexOf("}")
+  );
+  chrome.tabs.executeScript(tabId, {
+    code: `(async () => {${functionBody}})()`,
+  });
+}
+
 let connectors: any[] = [];
-// initialize extension
+console.log("Hello from background script!");
+
+// Initialize extension
 chrome.runtime.onInstalled.addListener(async function () {
   connectors = await buildConfig();
 
@@ -29,21 +43,6 @@ chrome.runtime.onInstalled.addListener(async function () {
   });
 });
 
-//Inject function asynchronously
-function injectFunction(tabId: number, functionName: Function) {
-  const functionString = functionName.toString();
-  const functionBody = functionString.slice(
-    functionString.indexOf("{") + 1,
-    functionString.lastIndexOf("}")
-  );
-  chrome.tabs.executeScript(tabId, {
-    code: `(async () => {${functionBody}})()`,
-  });
-}
-
-
-console.log("Hello from background script!");
-
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("Message received in background!", message);
   if (["request", "check", "download"].includes(message.type)) {
@@ -59,8 +58,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           changeInfo,
           tab
         ) {
-          //check if the tab has been loaded
-          //console.log("Received onUpdated event.", tab, changeInfo);
+          // Make sure the tab has been loaded
           if (
             tab.status === "complete" &&
             changeInfo.status === "complete" &&
