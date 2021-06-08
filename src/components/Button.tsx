@@ -9,7 +9,6 @@ type props = {
 async function getRequestUrl(url:string) {
   const connectors = await buildConfig();
   const { hostname } = new URL(url);
-  console.log(connectors);
   const connector = connectors.find(connector => hostname.includes(connector.hostname));
   return connector.requestUrl
 }
