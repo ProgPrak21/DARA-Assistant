@@ -47,36 +47,37 @@ console.log("Hello from background script!");
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("Message received in background!", message);
   if (["request", "check", "download"].includes(message.type)) {
-    // Listen for tabs update
-    chrome.tabs.onUpdated.addListener(async function onUpdated(
-      tabId,
-      changeInfo,
-      tab
-    ) {
-      //check if the tab has been loaded
-      //console.log("Received onUpdated event.", tab, changeInfo);
-      if (
-        tab.status === "complete" &&
-        changeInfo.status === "complete" &&
-        tabId === message.id
-      ) {
-        console.log("Our tab has been loaded.", tab, changeInfo);
+    // We need to find out which connector to use
+    const { hostname } = new URL(message.url ?? "");
+    const connector = connectors.find(connector => hostname.includes(connector.hostname));
+    if (connector) {
+      console.log(`Found matching ${connector.name} connector.`, connector);
+      chrome.tabs.update({ url: connector.requestUrl }, () => {
+        // Listen for tabs update
+        chrome.tabs.onUpdated.addListener(async function onUpdated(
+          tabId,
+          changeInfo,
+          tab
+        ) {
+          //check if the tab has been loaded
+          //console.log("Received onUpdated event.", tab, changeInfo);
+          if (
+            tab.status === "complete" &&
+            changeInfo.status === "complete" &&
+            tabId === message.id
+          ) {
+            console.log("Our tab has been loaded.", tab, changeInfo);
+            const { type } = message;
 
-        // Now we need to find out which connector to use
-        const { hostname } = new URL(tab.url ?? "");
-        const connector = connectors.find(connector => hostname.includes(connector.hostname));
-        console.log(connector);
-        if (connector) {
-          console.log(`Found matching ${connector.name} connector.`);
-          const { type } = message;
-
-          console.log(`Injecting ${type} script`);
-          injectFunction(tabId, connector[type]);
-          chrome.tabs.onUpdated.removeListener(onUpdated);
-        } else {
-          console.log(`Could not find connector matching ${hostname}.`);
-        }
+            console.log(`Injecting ${type} script`);
+            injectFunction(tabId, connector[type]);
+            chrome.tabs.onUpdated.removeListener(onUpdated);
+          }
+        });
       }
-    });
+      );
+    } else {
+      console.log(`Could not find connector matching ${hostname}.`);
+    }
   }
 });

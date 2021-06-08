@@ -6,27 +6,11 @@ type props = {
   type: string;
 };
 
-async function getRequestUrl(url:string) {
-  const connectors = await buildConfig();
-  const { hostname } = new URL(url);
-  const connector = connectors.find(connector => hostname.includes(connector.hostname));
-  return connector.requestUrl
-}
-
 export const Btn: React.FC<props> = ({ type }) => {
   const onClick = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const tab = tabs[0];
-      const url = tab.url ? await getRequestUrl(tab.url) : false;
-      chrome.tabs.update(
-        {
-          url: url,
-        },
-        (tab) => {
-          //send a msg to background script
-          chrome.runtime.sendMessage({ ...tab, type: type });
-        }
-      );
+      chrome.runtime.sendMessage({ ...tab, type: type });
     });
   };
 
