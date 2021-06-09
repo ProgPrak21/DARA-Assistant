@@ -1,28 +1,21 @@
 import * as React from "react";
-import { Btn } from "./Button";
-import { RequestInfo } from "./RequestInfo";
-import { DownloadInfo } from "./DownloadInfo";
+import { Entry } from "./Entry";
 import { Grid } from "@material-ui/core";
 
-export const Popup = () => {
+type props = {
+  actions: Array<string>;
+};
+
+export const Popup = ({ actions }: props) => {
   return (
     <>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          DARA
+          DARA Data Request Assistant
         </Grid>
-        <Grid style={{ textAlign: "left" }} item xs={6}>
-          <Btn type={"request"} />
-        </Grid>
-        <Grid item xs={6}>
-          <RequestInfo />
-        </Grid>
-        <Grid style={{ textAlign: "left" }} item xs={6}>
-          <Btn type={"download"} />
-        </Grid>
-        <Grid item xs={6}>
-          <DownloadInfo />
-        </Grid>
+        {actions
+          ? <> { actions.map((action:any) => <Entry type={action}/> ) } </>
+          : <div>'Pending'</div>}
       </Grid>
     </>
   );
