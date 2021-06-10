@@ -1,4 +1,4 @@
-# Chrome Extension boilerplate created with React Typescript
+# DARA Assistant Chrome Extension
 
 ## Getting started
 
