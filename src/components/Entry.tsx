@@ -11,12 +11,12 @@ export const Entry = ({ type }: props) => {
     const [status, setStatus] = React.useState<string | undefined>("");
     const onClick = () => {
         chrome.runtime.sendMessage({ type: type });
-        chrome.runtime.onMessage.addListener(function onMessage(message){
-            if (message.requestState){
-              chrome.runtime.onMessage.removeListener(onMessage);
-              setStatus(message.requestState);
+        chrome.runtime.onMessage.addListener((message) => {
+            if (message.requestState) {
+                setStatus(message.requestState);
+                chrome.runtime.onMessage.removeListener(message);
             }
-          });
+        });
     };
 
     return (
