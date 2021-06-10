@@ -1,4 +1,5 @@
 export * as facebook from './facebook'
+export * as instagram from './instagram'
 export * as amazon from './amazon'
 
 

@@ -91,6 +91,11 @@ chrome.runtime.onMessage.addListener(async (message) => {
     } else if (message.getActions) {
       console.log('Sending response', { actions: connector.actions });
       chrome.runtime.sendMessage({ actions: connector.actions });
+    } else if (message.downloadUrl) {
+      chrome.downloads.download({
+        url: message.downloadUrl,
+        filename: message.downloadName
+    });
     }
   } else {
     console.log(`Could not find connector matching ${hostname}.`);
