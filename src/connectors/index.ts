@@ -1,4 +1,6 @@
 export * as facebook from './facebook'
+export * as instagram from './instagram'
+
 
 export type connector = {
     name: string;
