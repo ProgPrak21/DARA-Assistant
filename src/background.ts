@@ -77,6 +77,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
               changeInfoL.status === "complete" &&
               tabIdL === tab.id
             ) {
+              chrome.tabs.onUpdated.removeListener(onUpdated);
               console.log("Our tab has been loaded.", tabL, changeInfoL);
               console.log(`Injecting ${action} script`);
               injectFunction(tabIdL, (<any>connector)[action]);
