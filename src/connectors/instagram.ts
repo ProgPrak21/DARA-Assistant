@@ -1,12 +1,16 @@
-
-
 export const name = 'instagram';
 export const hostname = 'instagram.com';
-export const requestUrl= 'https://www.instagram.com/download/request/';
-export const actions = ['download']
+export const requestUrl = 'https://www.instagram.com/download/request/';
+export const actions = ['request','download']
 
 
-export const download = async () =>{
+export const request = async () => {
+    (<any> document.getElementById('igCoreRadioButtonoutputFormatJSON')).checked = true;
+    (<any> document.querySelector('form > div > button')).click();
+    chrome.runtime.sendMessage({ actionResponse: "Your data was requested." });
+}
+
+export const download = async () => {
     const scrapingUrls = [
         "https://www.instagram.com/accounts/access_tool/account_privacy_changes?__a=1",
         "https://www.instagram.com/accounts/access_tool/password_changes?__a=1",
@@ -48,10 +52,10 @@ export const download = async () =>{
         };
     });
     const responsesJson = JSON.stringify(responses, null, 4);
-    
+
     // For now we can offer a download:
-	let blob = new Blob( [ responsesJson ], { type: 'data:text/json;charset=utf-8m'	});
-	let url = URL.createObjectURL( blob );
+    let blob = new Blob([responsesJson], { type: 'data:text/json;charset=utf-8m' });
+    let url = URL.createObjectURL(blob);
     chrome.runtime.sendMessage({ downloadUrl: url, downloadName: 'instagram_data.json' });
     chrome.runtime.sendMessage({ actionResponse: "Your Download is ready." });
 }
