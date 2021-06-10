@@ -2,14 +2,14 @@ import * as React from "react";
 import { Button } from "@material-ui/core";
 
 type props = {
-  type: string;
+  action: string;
 };
 
-export const Btn: React.FC<props> = ({ type }) => {
+export const Btn: React.FC<props> = ({ action }) => {
   const onClick = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const tab = tabs[0];
-      chrome.runtime.sendMessage({ ...tab, type: type });
+      chrome.runtime.sendMessage({ ...tab, action: action });
     });
   };
 
@@ -21,7 +21,7 @@ export const Btn: React.FC<props> = ({ type }) => {
         color="primary"
         onClick={onClick}
       >
-        {type}
+        {action}
       </Button>
     </div>
   );

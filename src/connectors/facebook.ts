@@ -63,71 +63,7 @@ export const request = async () => {
           ?.click?.();
     }
   });
-};
-
-export const check = async () => {
-  console.log("Executing Facebook Check!");
-
-  const pause = (time: number) =>
-    new Promise((resolve) => setTimeout(resolve, time));
-
-  //Get all the iframes, and filter out the ads
-  const getIframes = () => {
-    return Array.from(document.querySelectorAll("iframe")).filter(
-      (e) => !e.src.includes("common/referer_frame.php")
-    );
-  };
-
-  let allIframes = getIframes();
-
-  //check if the iframes are loaded, and retry for 5 times if not
-  if (!allIframes.length) {
-    for (let i = 0; i < 5; i++) {
-      allIframes = getIframes();
-      await pause(2000);
-      if (allIframes.length) break;
-    }
-  }
-
-  let result;
-
-  let pending = allIframes.map(
-    (iframe) =>
-      iframe.contentWindow &&
-      Array.from(
-        iframe.contentWindow.document.body.querySelectorAll(
-          'div[role="heading"]'
-        )
-      ).find((e) =>
-        e.textContent?.startsWith(
-          "A copy of your information is being created."
-        )
-      )
-  );
-  console.log('Pending:', pending);
-
-  let ready = allIframes.map(
-    (iframe) =>
-      iframe.contentWindow &&
-      Array.from(
-        iframe.contentWindow.document.body.querySelectorAll(
-          'div[data-hover="tooltip"]'
-        )
-      ).find((e) => e.textContent?.startsWith("Download"))
-  );
-  console.log('Ready:', ready);
-
-  result = "none";
-  if (!pending.includes(undefined) && pending.length === 1) {
-    result = "pending";
-  }
-  if (!ready.includes(undefined) && ready.length === 1) {
-    result = "ready";
-  }
-  console.log(`Request is ${result}!`);
-
-  // Send message to popup that our request is ready
-  chrome.runtime.sendMessage({ requestState: result });
+  chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
 };
 
 export const download = async () => {
@@ -146,7 +82,6 @@ export const download = async () => {
   };
 
   let allIframes = getIframes();
-  console.log('Got Iframes:', allIframes);
 
   //check if the iframes are loaded, and retry for 5 times if not
   if (!allIframes.length) {
@@ -158,6 +93,20 @@ export const download = async () => {
     }
   }
 
+  let pending = allIframes.map(
+    (iframe) =>
+      iframe.contentWindow &&
+      Array.from(
+        iframe.contentWindow.document.body.querySelectorAll(
+          'div[role="heading"]'
+        )
+      ).find((e) =>
+        e.textContent?.startsWith(
+          "A copy of your information is being created."
+        )
+      )
+  );
+
   let downloadBtn: HTMLElement = allIframes.map(
     (iframe) =>
       iframe.contentWindow &&
@@ -168,5 +117,10 @@ export const download = async () => {
       )?.find((e) => e?.textContent?.startsWith("Download"))
   )[0] as HTMLElement;
 
-  downloadBtn.click();
+  if (typeof(downloadBtn) !== undefined) {
+    downloadBtn.click();
+    chrome.runtime.sendMessage({ actionResponse: "Your data request is ready to download." });
+  } else if (!pending.includes(undefined) && pending.length === 1) {
+    chrome.runtime.sendMessage({ actionResponse: "Your data request is still pending." });
+  }
 };

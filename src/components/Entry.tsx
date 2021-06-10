@@ -4,17 +4,17 @@ import { Grid } from "@material-ui/core";
 
 
 type props = {
-    type: string;
+    action: string;
 };
 
-export const Entry = ({ type }: props) => {
+export const Entry = ({ action }: props) => {
     const [status, setStatus] = React.useState<string | undefined>("");
     const onClick = () => {
-        chrome.runtime.sendMessage({ type: type });
-        chrome.runtime.onMessage.addListener((message) => {
-            if (message.requestState) {
-                setStatus(message.requestState);
-                chrome.runtime.onMessage.removeListener(message);
+        chrome.runtime.sendMessage({ action: action });
+        chrome.runtime.onMessage.addListener(function onMessage(message) {
+            if (message.actionResponse) {
+                setStatus(message.actionResponse);
+                chrome.runtime.onMessage.removeListener(onMessage);
             }
         });
     };
@@ -29,7 +29,7 @@ export const Entry = ({ type }: props) => {
                         color="primary"
                         onClick={onClick}
                     >
-                        {type}
+                        {action}
                     </Button>
                 </div>
             </Grid>
@@ -37,7 +37,7 @@ export const Entry = ({ type }: props) => {
                 <div>
                     {status
                         ? status
-                        : `Click ${type} to ${type} your data when they are ready!`}
+                        : `Click ${action} to ${action} your data when they are ready!`}
                 </div>
             </Grid>
         </>

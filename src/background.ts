@@ -57,31 +57,6 @@ chrome.runtime.onInstalled.addListener(async function () {
   });
 });
 
-function handleInjection(type: string, connector: connector, tabId: any) {
-  switch (type) {
-    case 'download':
-      console.log(`Injecting check script`);
-      injectFunction(tabId, connector.check);
-      chrome.runtime.onMessage.addListener(function onMessage(message) {
-        if (message.requestState === 'ready') {
-          chrome.runtime.sendMessage({ requestState: "Your data request is ready to download." });
-          console.log(`Injecting download script`);
-          injectFunction(tabId, connector.download);
-        } else {
-          chrome.runtime.sendMessage({ requestState: "Your data request is not yet ready to download." });
-        }
-        chrome.runtime.onMessage.removeListener(onMessage);
-      });
-      break;
-
-    case 'request':
-      console.log(`Injecting request script`);
-      injectFunction(tabId, connector.request);
-      chrome.runtime.sendMessage({ requestState: "You requested your data." });
-      break;
-  }
-}
-
 chrome.runtime.onMessage.addListener(async (message) => {
   console.log("Message received in background!", message);
 
@@ -90,8 +65,8 @@ chrome.runtime.onMessage.addListener(async (message) => {
   const connector = connectors.find(connector => hostname.includes(connector.hostname));
   if (connector && tab) {
     console.log(`Found matching ${connector.name} connector.`, connector);
-    if (["request", "download"].includes(message.type)) {
-      const { type } = message;
+    if (message.action) {
+      const { action } = message;
       if (tab.url !== connector.requestUrl) {
         chrome.tabs.update({ url: connector.requestUrl }, () => {
           // Listen for tabs update
@@ -103,16 +78,16 @@ chrome.runtime.onMessage.addListener(async (message) => {
               tabIdL === tab.id
             ) {
               console.log("Our tab has been loaded.", tabL, changeInfoL);
-              handleInjection(type, connector, tabIdL);
+              console.log(`Injecting ${action} script`);
+              injectFunction(tabIdL, (<any>connector)[action]);
             }
           });
         });
       } else {
-        handleInjection(type, connector, tab.id);
+        console.log(`Injecting ${action} script`);
+        injectFunction((<number>tab.id), (<any>connector)[action]);
       }
-    } else if (message.backgroundInfo) {
-
-      const connector: any = connectors.find((connector: any) => hostname.includes(connector.hostname));
+    } else if (message.getActions) {
       console.log('Sending response', { actions: connector.actions });
       chrome.runtime.sendMessage({ actions: connector.actions });
     }
