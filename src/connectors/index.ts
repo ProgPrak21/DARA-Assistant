@@ -1,4 +1,6 @@
 export * as facebook from './facebook'
+export * as amazon from './amazon'
+
 
 export type connector = {
     name: string;
