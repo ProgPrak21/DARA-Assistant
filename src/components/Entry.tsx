@@ -33,12 +33,12 @@ export const Entry = ({ action }: props) => {
                     </Button>
                 </div>
             </Grid>
-            <Grid item xs={6}>
-                <div>
+            <Grid item xs={6} className="Grid-item">
+                <span>
                     {status
                         ? status
                         : `Click ${action} to ${action} your data when they are ready!`}
-                </div>
+                </span>
             </Grid>
         </>
     );

@@ -1,18 +1,23 @@
 import * as React from "react";
 import { Entry } from "./Entry";
+import { DefaultInfo } from "./DefaultInfo";
 import { Grid } from "@material-ui/core";
 
 
 
 export const Popup = () => {
 
-  let [actions, setActions] = React.useState<Array<string>>([]);
+  const [actions, setActions] = React.useState<Array<string>>([]);
+  const [hostname, setHostname] = React.useState<string>("");
 
-  if (!actions.length) {
+  if (!actions.length && !hostname.length) {
     chrome.runtime.sendMessage({ getActions: true });
     chrome.runtime.onMessage.addListener((message) => {
       if (message.actions) {
         setActions(message.actions);
+        chrome.runtime.onMessage.removeListener(message);
+      } else if (message.hostname) {
+        setHostname(message.hostname);
         chrome.runtime.onMessage.removeListener(message);
       }
     });
@@ -20,13 +25,13 @@ export const Popup = () => {
 
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          DARA Data Request Assistant
-        </Grid>
-        {actions
+      <Grid container spacing={2}>
+      <Grid item xs={12} className="App-header">
+        <span>DARA Data Request Assistant</span>
+      </Grid>
+        {actions.length
           ? <> {actions.map((action: any) => <Entry action={action} />)} </>
-          : <div>'Pending'</div>}
+          : <DefaultInfo hostname={hostname} />}
       </Grid>
     </>
   );

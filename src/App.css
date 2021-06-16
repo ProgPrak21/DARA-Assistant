@@ -25,6 +25,12 @@
   padding: 10px;
 }
 
+.Grid-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .App-link {
   color: #61dafb;
 }
@@ -41,7 +47,6 @@
 .App-body {
   background-color: #282c34;
   min-width: 250px;
-  min-height: 150px;
   color: aliceblue;
   padding: 20px;
 }

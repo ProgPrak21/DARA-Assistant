@@ -1,6 +1,8 @@
 import * as con from './connectors/.';
 import type { connector } from './connectors/.';
 
+let connectors: Array<connector> = [];
+
 async function getCurrentTab() {
   return new Promise<chrome.tabs.Tab>((resolve, reject) => {
     chrome.tabs.query({
@@ -24,8 +26,6 @@ function injectFunction(tabId: number, f: Function) {
   });
 }
 
-let connectors: Array<connector> = [];
-
 // Initialize extension
 chrome.runtime.onInstalled.addListener(async function () {
 
@@ -33,42 +33,20 @@ chrome.runtime.onInstalled.addListener(async function () {
   for (let key of Object.keys(con)) {
     connectors.push((<any>con)[key]);
   }
-
-  // Implement url based extension activation via page_action 
-  // Replace all rules
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, async function () {
-    // With new rules
-    let conditions = [];
-    // For every available connector
-    for (let c of connectors) {
-      conditions.push(
-        new chrome.declarativeContent.PageStateMatcher({
-          pageUrl: { hostContains: c.hostname },
-        })
-      )
-    }
-    chrome.declarativeContent.onPageChanged.addRules([
-      {
-        conditions,
-        // Show the extension's page action.
-        actions: [new chrome.declarativeContent.ShowPageAction()]
-      }
-    ]);
-  });
 });
 
-function getConnector(tab: chrome.tabs.Tab) {
+async function getConnector(): Promise<[chrome.tabs.Tab, connector | undefined, string]> {
+  const tab = await getCurrentTab();
   const { hostname } = new URL(tab.url ?? "");
   const connector = connectors.find(connector => hostname.includes(connector.hostname));
-  return connector;
+  return [tab, connector, hostname]
 }
 
 chrome.runtime.onMessage.addListener(async (message) => {
   console.log("Message received in background!", message);
 
   if (message.action) {
-    const tab = await getCurrentTab();
-    const connector = getConnector(tab);
+    const [tab, connector, hostname] = await getConnector();
     if (connector && tab) {
       console.log(`Found matching ${connector.name} connector.`, connector);
       const { action } = message;
@@ -79,18 +57,18 @@ chrome.runtime.onMessage.addListener(async (message) => {
             if (
               tabL.status === "complete" &&
               changeInfoL.status === "complete" &&
-              tabIdL === tab.id 
+              tabIdL === tab.id
             ) {
-            if (tabL.url === connector.requestUrl){
-              chrome.tabs.onUpdated.removeListener(onUpdated);
-              console.log("Our tab has been loaded.", tabL, changeInfoL);
-              console.log(`Injecting ${action} script`);
-              injectFunction(tabIdL, (<any>connector)[action]);
-            } else {
-              console.log("We didn't reach requestUrl, probably the user still needs to login.")
-              chrome.runtime.sendMessage({ actionResponse: "Couldn't load the request page, probably you need to login first." });
+              if (tabL.url === connector.requestUrl) {
+                chrome.tabs.onUpdated.removeListener(onUpdated);
+                console.log("Our tab has been loaded.", tabL, changeInfoL);
+                console.log(`Injecting ${action} script`);
+                injectFunction(tabIdL, (<any>connector)[action]);
+              } else {
+                console.log("We didn't reach requestUrl, probably the user still needs to login.")
+                chrome.runtime.sendMessage({ actionResponse: "Couldn't load the request page, probably you need to login first." });
+              }
             }
-          }
           });
         });
       } else {
@@ -101,13 +79,13 @@ chrome.runtime.onMessage.addListener(async (message) => {
       console.log(`Could not find connector matching ${tab.url}.`);
     }
   } else if (message.getActions) {
-    const tab = await getCurrentTab();
-    const connector = getConnector(tab);
+    const [tab, connector, hostname] = await getConnector();
     if (connector && tab) {
       console.log('Sending response', { actions: connector.actions });
       chrome.runtime.sendMessage({ actions: connector.actions });
     } else {
       console.log(`Could not find connector matching ${tab.url}.`);
+      chrome.runtime.sendMessage({ hostname: hostname });
     }
   } else if (message.downloadUrl) {
     chrome.downloads.download({
