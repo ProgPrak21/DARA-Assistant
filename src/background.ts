@@ -14,18 +14,6 @@ async function getCurrentTab() {
   });
 };
 
-// Inject function asynchronously
-function injectFunction(tabId: number, f: Function) {
-  const functionString = f.toString();
-  const functionBody = functionString.slice(
-    functionString.indexOf("{") + 1,
-    functionString.lastIndexOf("}")
-  );
-  chrome.tabs.executeScript(tabId, {
-    code: `(async () => {${functionBody}})()`,
-  });
-}
-
 // Initialize extension
 chrome.runtime.onInstalled.addListener(async function () {
 
@@ -33,6 +21,7 @@ chrome.runtime.onInstalled.addListener(async function () {
   for (let key of Object.keys(con)) {
     connectors.push((<any>con)[key]);
   }
+  console.log('Loaded connectors:', connectors);
 });
 
 async function getConnector(): Promise<[chrome.tabs.Tab, connector | undefined, string]> {
@@ -62,8 +51,8 @@ chrome.runtime.onMessage.addListener(async (message) => {
               if (tabL.url === connector.requestUrl) {
                 chrome.tabs.onUpdated.removeListener(onUpdated);
                 console.log("Our tab has been loaded.", tabL, changeInfoL);
-                console.log(`Injecting ${action} script`);
-                injectFunction(tabIdL, (<any>connector)[action]);
+                console.log(`Send Message to content script to execute ${action}`);
+                chrome.tabs.sendMessage(<number>tab.id, {action: action});
               } else {
                 console.log("We didn't reach requestUrl, probably the user still needs to login.")
                 chrome.runtime.sendMessage({ actionResponse: "Couldn't load the request page, probably you need to login first." });
@@ -72,8 +61,8 @@ chrome.runtime.onMessage.addListener(async (message) => {
           });
         });
       } else {
-        console.log(`Injecting ${action} script`);
-        injectFunction(<number>tab.id, (<any>connector)[action]);
+        console.log(`Send Message to content script to execute ${action}`);
+        chrome.tabs.sendMessage(<number>tab.id, {action: action});
       }
     } else {
       console.log(`Could not find connector matching ${tab.url}.`);

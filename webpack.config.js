@@ -6,6 +6,7 @@ const config = {
   entry: {
     popup: path.join(__dirname, "src/popup.tsx"),
     background: path.join(__dirname, "src/background.ts"),
+    content: path.join(__dirname, "src/content.ts")
   },
   output: { path: path.join(__dirname, "dist"), filename: "[name].js" },
   module: {

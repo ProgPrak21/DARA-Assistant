@@ -1,3 +1,5 @@
+import * as Utils from '../connectorUtils';
+
 export const name = '';
 export const hostname = '';
 export const requestUrl = '';

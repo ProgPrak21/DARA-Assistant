@@ -49,4 +49,5 @@
   min-width: 250px;
   color: aliceblue;
   padding: 20px;
+  font-size: calc(10px + 1vmin);
 }

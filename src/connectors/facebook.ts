@@ -117,7 +117,7 @@ export const download = async () => {
       )?.find((e) => e?.textContent?.startsWith("Download"))
   )[0] as HTMLElement;
 
-  if (typeof(downloadBtn) !== undefined) {
+  if (downloadBtn !== undefined) {
     downloadBtn.click();
     chrome.runtime.sendMessage({ actionResponse: "Your data request is ready to download." });
   } else if (!pending.includes(undefined) && pending.length === 1) {
