@@ -73,7 +73,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
       console.log('Sending response', { actions: connector.actions });
       chrome.runtime.sendMessage({ actions: connector.actions });
     } else {
-      console.log(`Could not find connector matching ${tab.url}.`);
+      console.log(`Could not find connector matching ${tab.url}.`, connector, tab, hostname);
       chrome.runtime.sendMessage({ hostname: hostname });
     }
   } else if (message.downloadUrl) {

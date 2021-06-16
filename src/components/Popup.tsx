@@ -10,7 +10,7 @@ export const Popup = () => {
   const [actions, setActions] = React.useState<Array<string>>([]);
   const [hostname, setHostname] = React.useState<string>("");
 
-  if (!actions.length && !hostname.length) {
+  if (!actions.length) {
     chrome.runtime.sendMessage({ getActions: true });
     chrome.runtime.onMessage.addListener((message) => {
       if (message.actions) {
