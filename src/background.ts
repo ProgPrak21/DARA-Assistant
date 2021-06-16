@@ -115,5 +115,4 @@ chrome.runtime.onMessage.addListener(async (message) => {
       filename: message.downloadName
     });
   }
-
 });

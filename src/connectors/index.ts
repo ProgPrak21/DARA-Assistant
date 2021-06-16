@@ -2,7 +2,7 @@ export * as facebook from './facebook'
 export * as instagram from './instagram'
 export * as amazon from './amazon'
 export * as ebay from './ebay'
-
+export * as linkedin from './linkedin'
 
 export type connector = {
     name: string;
