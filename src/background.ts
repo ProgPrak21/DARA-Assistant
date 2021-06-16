@@ -57,47 +57,63 @@ chrome.runtime.onInstalled.addListener(async function () {
   });
 });
 
+function getConnector(tab: chrome.tabs.Tab) {
+  const { hostname } = new URL(tab.url ?? "");
+  const connector = connectors.find(connector => hostname.includes(connector.hostname));
+  return connector;
+}
+
 chrome.runtime.onMessage.addListener(async (message) => {
   console.log("Message received in background!", message);
 
-  const tab = await getCurrentTab();
-  const { hostname } = new URL(tab.url ?? "");
-  const connector = connectors.find(connector => hostname.includes(connector.hostname));
-  if (connector && tab) {
-    console.log(`Found matching ${connector.name} connector.`, connector);
-    if (message.action) {
+  if (message.action) {
+    const tab = await getCurrentTab();
+    const connector = getConnector(tab);
+    if (connector && tab) {
+      console.log(`Found matching ${connector.name} connector.`, connector);
       const { action } = message;
       if (tab.url !== connector.requestUrl) {
         chrome.tabs.update({ url: connector.requestUrl }, () => {
-          // Listen for tabs update
           chrome.tabs.onUpdated.addListener(function onUpdated(tabIdL, changeInfoL, tabL) {
-            // Make sure the tab has been loaded
+            // Make sure the correct url has been loaded
             if (
               tabL.status === "complete" &&
               changeInfoL.status === "complete" &&
-              tabIdL === tab.id
+              tabIdL === tab.id 
             ) {
+            if (tabL.url === connector.requestUrl){
               chrome.tabs.onUpdated.removeListener(onUpdated);
               console.log("Our tab has been loaded.", tabL, changeInfoL);
               console.log(`Injecting ${action} script`);
               injectFunction(tabIdL, (<any>connector)[action]);
+            } else {
+              console.log("We didn't reach requestUrl, probably the user still needs to login.")
+              chrome.runtime.sendMessage({ actionResponse: "Couldn't load the request page, probably you need to login first." });
             }
+          }
           });
         });
       } else {
         console.log(`Injecting ${action} script`);
-        injectFunction((<number>tab.id), (<any>connector)[action]);
+        injectFunction(<number>tab.id, (<any>connector)[action]);
       }
-    } else if (message.getActions) {
+    } else {
+      console.log(`Could not find connector matching ${tab.url}.`);
+    }
+  } else if (message.getActions) {
+    const tab = await getCurrentTab();
+    const connector = getConnector(tab);
+    if (connector && tab) {
       console.log('Sending response', { actions: connector.actions });
       chrome.runtime.sendMessage({ actions: connector.actions });
-    } else if (message.downloadUrl) {
-      chrome.downloads.download({
-        url: message.downloadUrl,
-        filename: message.downloadName
-    });
+    } else {
+      console.log(`Could not find connector matching ${tab.url}.`);
     }
-  } else {
-    console.log(`Could not find connector matching ${hostname}.`);
+  } else if (message.downloadUrl) {
+    chrome.downloads.download({
+      url: message.downloadUrl,
+      filename: message.downloadName
+    });
   }
+
 });
