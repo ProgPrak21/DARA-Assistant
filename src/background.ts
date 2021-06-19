@@ -3,6 +3,15 @@ import type { connector } from "./connectors/.";
 
 let connectors: Array<connector> = [];
 
+// Initialize extension
+(async function () {
+  // Make our connector modules iteratable
+  for (let key of Object.keys(con)) {
+    connectors.push((<any>con)[key]);
+  }
+  console.log("Loaded connectors:", connectors);
+})();
+
 async function getCurrentTab() {
   return new Promise<chrome.tabs.Tab>((resolve, reject) => {
     chrome.tabs.query(
@@ -16,15 +25,6 @@ async function getCurrentTab() {
     );
   });
 }
-
-// Initialize extension
-chrome.runtime.onStartup.addListener(async function () {
-  // Make our connector modules iteratable
-  for (let key of Object.keys(con)) {
-    connectors.push((<any>con)[key]);
-  }
-  console.log("Loaded connectors:", connectors);
-});
 
 async function getConnector(): Promise<
   [chrome.tabs.Tab, connector | undefined, string]
