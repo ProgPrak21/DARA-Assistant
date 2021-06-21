@@ -7,10 +7,7 @@ type props = {
 
 export const Btn: React.FC<props> = ({ action }) => {
   const onClick = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const tab = tabs[0];
-      chrome.runtime.sendMessage({ ...tab, action: action });
-    });
+    chrome.runtime.sendMessage({ action: action });
   };
 
   return (

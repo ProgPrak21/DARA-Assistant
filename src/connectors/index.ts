@@ -3,7 +3,9 @@ export * as instagram from './instagram'
 export * as amazon from './amazon'
 export * as ebay from './ebay'
 export * as linkedin from './linkedin'
+export * as github from './github'
 
+/*
 export type connector = {
     name: string;
     hostname: string;
@@ -12,3 +14,4 @@ export type connector = {
     request: Function;
     download: Function;
 };
+*/

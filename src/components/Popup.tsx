@@ -26,9 +26,6 @@ export const Popup = () => {
   return (
     <>
       <Grid container spacing={2}>
-      <Grid item xs={12} className="App-header">
-        <span>DARA Data Request Assistant</span>
-      </Grid>
         {actions.length
           ? <> {actions.map((action: any) => <Entry action={action} />)} </>
           : <DefaultInfo hostname={hostname} />}

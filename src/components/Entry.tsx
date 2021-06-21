@@ -37,7 +37,7 @@ export const Entry = ({ action }: props) => {
                 <span>
                     {status
                         ? status
-                        : `Click ${action} to ${action} your data when they are ready!`}
+                        : `Click ${action} to ${action} your data.`}
                 </span>
             </Grid>
         </>
