@@ -4,14 +4,5 @@ export * as amazon from './amazon'
 export * as ebay from './ebay'
 export * as linkedin from './linkedin'
 export * as github from './github'
-
-/*
-export type connector = {
-    name: string;
-    hostname: string;
-    requestUrl: string;
-    actions: Array<string>;
-    request: Function;
-    download: Function;
-};
-*/
+export * as schufa from './schufa'
+export * as apple from './apple'

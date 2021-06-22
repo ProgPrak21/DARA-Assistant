@@ -16,11 +16,5 @@ export const request = async() => {
     if (b1) simulateClick(b1);
     if (b2) simulateClick(b2);
 
-    
-    chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
-};
-
-export const download = async () => {
-    
     chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
 };

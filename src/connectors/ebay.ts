@@ -22,7 +22,3 @@ export const request = async () => {
     }
 
 };
-
-export const download = async () => {
-    chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
-};
