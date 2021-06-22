@@ -1,13 +1,16 @@
 export const name = 'instagram';
 export const hostname = 'instagram.com';
 export const requestUrl = 'https://www.instagram.com/download/request/';
-export const actions = ['request','download']
+export const actions = ['request', 'download']
 
 
 export const request = async () => {
-    (<any> document.getElementById('igCoreRadioButtonoutputFormatJSON')).checked = true;
-    (<any> document.querySelector('form > div > button')).click();
-    chrome.runtime.sendMessage({ actionResponse: "Your data was requested." });
+    const radio = document.getElementById('igCoreRadioButtonoutputFormatJSON')
+    if (radio) {
+        (<any>document.getElementById('igCoreRadioButtonoutputFormatJSON')).checked = true;
+        (<any>document.querySelector('form > div > button')).click();
+        chrome.runtime.sendMessage({ actionResponse: "Please enter your password." });
+    }
 }
 
 export const download = async () => {

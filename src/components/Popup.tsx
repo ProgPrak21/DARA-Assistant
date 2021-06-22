@@ -9,6 +9,14 @@ export const Popup = () => {
 
   const [actions, setActions] = React.useState<Array<string>>([]);
   const [hostname, setHostname] = React.useState<string>("");
+  const referal = (
+    <>
+      <span>
+        With our <a className="App-link" target="_blank" href="https://dara-tuberlin.netlify.app/"> Analysing Backend</a>, you 
+        can gain further insight in your requested data.
+      </span>
+    </>
+  );
 
   if (!actions.length) {
     chrome.runtime.sendMessage({ getActions: true });
@@ -29,6 +37,9 @@ export const Popup = () => {
         {actions.length
           ? <> {actions.map((action: any) => <Entry action={action} />)} </>
           : <DefaultInfo hostname={hostname} />}
+        <Grid item xs={12} className="Grid-item">
+          {referal}
+        </Grid>
       </Grid>
     </>
   );

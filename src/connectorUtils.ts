@@ -26,9 +26,9 @@ export function waitForElement(selector: string) {
 }
 
 export function sendPending() {
-    chrome.runtime.sendMessage({ actionResponse: "A previous request is still pending." });
+    chrome.runtime.sendMessage({ actionResponse: "A previous request is still pending.", actionResult: false });
 }
 
 export function sendSuccess() {
-    chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
+    chrome.runtime.sendMessage({ actionResponse: "You requested your data.", actionResult: true });
 }
