@@ -3,6 +3,7 @@ export const hostname = 'google.com';
 export const requestUrl = 'https://takeout.google.com/';
 export const actions = ['request'];
 
+// WIP
 export const request = async() => {
 
     const simulateClick = function(element:HTMLElement) {

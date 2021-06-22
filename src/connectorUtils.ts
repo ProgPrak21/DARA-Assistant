@@ -24,3 +24,11 @@ export function waitForElement(selector: string) {
             });
     });
 }
+
+export function sendPending() {
+    chrome.runtime.sendMessage({ actionResponse: "A previous request is still pending." });
+}
+
+export function sendSuccess() {
+    chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
+}
