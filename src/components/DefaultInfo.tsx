@@ -9,16 +9,19 @@ type props = {
 
 export const DefaultInfo = ({ hostname }: props) => {
 
+    const onClick = () => {
+        chrome.tabs.create({url: chrome.extension.getURL('overview.html'), active: true});
+    };
+
     return (
         <>
             <Grid item xs={12}>
                 <p>
                     We currently don't support automated requests on {hostname}.
-                    You can send a email based request via <a className="App-link" target="_blank" href="https://www.mydatadoneright.eu/cy/request/type">My Data Done Right</a>.
+                    You may send an email based request via <a className="App-link" target="_blank" href="https://www.mydatadoneright.eu/cy/request/type">My Data Done Right</a>.
                 </p>
                 <p>
-                    You can find all availabe connectors on our <a className="App-link" target="_blank" href="https://example.com">Website</a> and 
-                    on our <a className="App-link" target="_blank" href="https://github.com/ProgPrak21/react-ts-extension">Github page</a>.
+                    A list of <a className="App-link" onClick={onClick}>available companies</a>.
                 </p>
                 <p>
                     DARA is a community effort, if you think this page supports browser based data access requests, 
