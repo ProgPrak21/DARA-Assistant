@@ -24,11 +24,11 @@ export const request = async () => {
     }
     */
 
-    const btn = await Utils.waitForElement("form>input.btn.btn-sm[type='submit']")
+    const btn = await Utils.waitForElement("form>input.btn[type='submit']")
     if (btn?.hasAttribute('disabled')){
-        chrome.runtime.sendMessage({ actionResponse: "Your previous request is still pending." });
+        Utils.sendPending();
     } else {
         btn?.click();
-        chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
+        Utils.sendSuccess();
     }
 };

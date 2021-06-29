@@ -5,7 +5,7 @@ export function pause(time: number) {
 }
 
 export function waitForElement(selector: string) {
-  return new Promise<HTMLElement | null>(function (resolve, reject) {
+  return new Promise<HTMLElement | undefined>(function (resolve, reject) {
     let el = document.querySelector<HTMLElement>(selector);
     if (el) { resolve(el); }
 
@@ -22,6 +22,11 @@ export function waitForElement(selector: string) {
         childList: true,
         subtree: true
       });
+
+    let id = setTimeout(() => {
+      clearTimeout(id);
+      resolve(undefined);
+    }, 2500)
   });
 }
 
@@ -47,13 +52,22 @@ export function waitForElements(selector: string) {
         childList: true,
         subtree: true
       });
+
+    let id = setTimeout(() => {
+      clearTimeout(id);
+      resolve(undefined);
+    }, 2500)
   });
 }
 
 export function sendPending() {
-  chrome.runtime.sendMessage({ actionResponse: "A previous request is still pending.", actionResult: false });
+  chrome.runtime.sendMessage({ actionResponse: "⏳ A previous request is still pending." });
 }
 
 export function sendSuccess() {
-  chrome.runtime.sendMessage({ actionResponse: "You just requested your data.", actionResult: true });
+  chrome.runtime.sendMessage({ actionResponse: "🎉 You just requested your data." });
+}
+
+export function send(input: string) {
+  chrome.runtime.sendMessage({ actionResponse: input });
 }

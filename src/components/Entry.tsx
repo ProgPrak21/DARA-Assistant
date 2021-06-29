@@ -35,9 +35,7 @@ export const Entry = ({ action }: props) => {
       </Grid>
       <Grid item xs={12} className="Grid-item">
         <Typography variant='caption' align='justify'>
-          {status ? status
-            : 'Click ' + action.toUpperCase() + ' to ' + action + ' your data. You may need to login first.'
-          }
+          {'Click ' + action.toUpperCase() + ' to ' + action + ' your data. You may need to login first.'}
         </Typography>
       </Grid>
     </>

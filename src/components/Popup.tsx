@@ -1,13 +1,14 @@
 import * as React from "react";
 import { Entry } from "./Entry";
 import { DefaultInfo } from "./DefaultInfo";
-import { Button, Grid, Typography } from "@material-ui/core";
+import { Button, Divider, Grid, Typography } from "@material-ui/core";
 
 export const Popup = () => {
 
   const [actions, setActions] = React.useState<Array<string>>([]);
   const [hostname, setHostname] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
+  const [response, setResponse] = React.useState<string | undefined>("");
 
 
   if (!actions.length) {
@@ -19,6 +20,9 @@ export const Popup = () => {
         chrome.runtime.onMessage.removeListener(message);
       } else if (message.hostname) {
         setHostname(message.hostname);
+        chrome.runtime.onMessage.removeListener(message);
+      } else if (message.actionResponse) {
+        setResponse(message.actionResponse);
         chrome.runtime.onMessage.removeListener(message);
       }
     });
@@ -35,12 +39,28 @@ export const Popup = () => {
           </Grid>
         }
 
-        {actions.length
-          ? <> {actions.map((action) =>
-            <Entry action={action} />
-          )} </>
-          : <DefaultInfo hostname={hostname} />}
+        {
+          actions.length ?
+            <>
+              {actions.map((action) =>
+                <Entry action={action} />
+              )}
+            </>
+            : <DefaultInfo hostname={hostname} />
+        }
 
+        {response &&
+          <Grid item xs={12} className="Grid-item">
+            <Typography variant='caption' align='justify'>
+              {response}
+            </Typography>
+          </Grid>
+        }
+
+        <Grid item xs={12}>
+          <Divider variant="middle" />
+        </Grid>
+        
         <Grid item xs={12}>
           <Button
             style={{
@@ -58,7 +78,7 @@ export const Popup = () => {
 
         <Grid item xs={12} className="Grid-item">
           <Typography variant='caption' align='justify'>
-            Open the DARA analysing tool, to gain further insight in your requested data.
+            Click ANALYSE to open the DARA analysing tool. There you can submit previously requested data to gain further insights.
           </Typography>
         </Grid>
       </Grid>
