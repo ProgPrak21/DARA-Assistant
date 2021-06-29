@@ -4,9 +4,7 @@ export const name = 'amazon';
 export const hostname = 'amazon.com';
 export const requestUrl = 'https://www.amazon.com/gp/privacycentral/dsar/preview.html';
 export const actions = ['request'];
-export const description = "You can request your data from Amazon";
-
-
+export const description = "";
 
 export const request = async () => {
   await Utils.pause(200);

@@ -116,7 +116,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
     const [tab, connector, hostname] = await getConnector(message);
     if (connector && tab) {
       console.log("Sending response", { actions: connector.actions });
-      chrome.runtime.sendMessage({ actions: connector.actions });
+      chrome.runtime.sendMessage({ actions: connector.actions , description: connector.description});
     } else {
       console.log(
         `Could not find connector matching ${tab.url}.`,

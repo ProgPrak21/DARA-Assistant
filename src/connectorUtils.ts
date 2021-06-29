@@ -29,7 +29,7 @@ export function waitForElements(selector: string) {
   return new Promise<any | null>(function (resolve, reject) {
     let el = Array.from(document.querySelectorAll<HTMLElement>(selector));
     el.forEach((element) => {
-      if (element) { resolve(element); }
+      if (element) { resolve(el); }
     });
 
     new MutationObserver((mutationRecords, observer) => {
@@ -55,5 +55,5 @@ export function sendPending() {
 }
 
 export function sendSuccess() {
-  chrome.runtime.sendMessage({ actionResponse: "You requested your data.", actionResult: true });
+  chrome.runtime.sendMessage({ actionResponse: "You just requested your data.", actionResult: true });
 }

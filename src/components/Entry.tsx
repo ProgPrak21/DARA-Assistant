@@ -1,12 +1,13 @@
 import * as React from "react";
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
+import { description } from "../connectors/amazon";
 
 type props = {
   action: string;
 };
 
-export const Entry = ( {action}: props) => {
+export const Entry = ({ action }: props) => {
   const [status, setStatus] = React.useState<string | undefined>("");
   const onClick = () => {
     chrome.runtime.sendMessage({ action: action });
@@ -20,23 +21,24 @@ export const Entry = ( {action}: props) => {
 
   return (
     <>
-      <Grid style={{ textAlign: "left" }} item xs={6}>
+      <Grid item xs={12}>
         <div className="buttonContainer">
           <Button
             variant="contained"
             color="primary"
             onClick={onClick}
+            fullWidth={true}
           >
             {action}
           </Button>
         </div>
       </Grid>
-      <Grid item xs={6} className="Grid-item">
-        <span>
+      <Grid item xs={12} className="Grid-item">
+        <Typography variant='caption' align='justify'>
           {status ? status
-            : `Click ${action} to ${action} your data.`
+            : 'Click ' + action.toUpperCase() + ' to ' + action + ' your data. You may need to login first.'
           }
-        </span>
+        </Typography>
       </Grid>
     </>
   );

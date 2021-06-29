@@ -1,22 +1,17 @@
+import * as Utils from '../connectorUtils';
+
 export const name = 'google';
 export const hostname = 'google.com';
 export const requestUrl = 'https://takeout.google.com/';
 export const actions = ['request'];
 export const description = "";
 
-// WIP
 export const request = async() => {
-
-    const simulateClick = function(element:HTMLElement) {
-        element.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true, view: window }));
-        element.dispatchEvent(new MouseEvent("mouseup", { bubbles: true, cancelable: true, view: window }))
-    }
-
-    const b1 = document.querySelector<HTMLElement>("button[data-disable-idom='true'][aria-label]");
-    const b2 = document.querySelector<HTMLElement>("button[data-disable-idom='true'][contextmenu]");
-    
-    if (b1) simulateClick(b1);
-    if (b2) simulateClick(b2);
-
-    chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
+    Utils.pause(500);
+    (await Utils.waitForElements("c-wiz > div > div > div > div > button"))[0]?.click();
+    console.log('Clicked', (await Utils.waitForElements("c-wiz > div > div > div > div > button"))[0] )
+    Utils.pause(200);
+    (await Utils.waitForElements("c-wiz > div > div > div > div > button"))[1]?.click();
+    Utils.pause(200);
+    Utils.sendSuccess();
 };

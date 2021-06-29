@@ -7,12 +7,15 @@ export const Popup = () => {
 
   const [actions, setActions] = React.useState<Array<string>>([]);
   const [hostname, setHostname] = React.useState<string>("");
+  const [description, setDescription] = React.useState<string>("");
+
 
   if (!actions.length) {
     chrome.runtime.sendMessage({ getActions: true });
     chrome.runtime.onMessage.addListener((message) => {
       if (message.actions) {
         setActions(message.actions);
+        setDescription(message.description);
         chrome.runtime.onMessage.removeListener(message);
       } else if (message.hostname) {
         setHostname(message.hostname);
@@ -24,14 +27,22 @@ export const Popup = () => {
   return (
     <>
       <Grid container spacing={2}>
+        {description &&
+          <Grid item xs={12} className="Grid-item">
+            <Typography variant='caption' align='justify'>
+              {description}
+            </Typography>
+          </Grid>
+        }
+
         {actions.length
           ? <> {actions.map((action) =>
             <Entry action={action} />
           )} </>
           : <DefaultInfo hostname={hostname} />}
-        
+
         <Grid item xs={12}>
-        <Button
+          <Button
             style={{
               //textTransform: "none"
             }}
