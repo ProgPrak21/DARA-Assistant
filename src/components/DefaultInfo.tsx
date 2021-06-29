@@ -1,7 +1,5 @@
 import * as React from "react";
-import { Button, Grid } from "@material-ui/core";
-import { capitalize } from "@material-ui/core";
-import { Typography } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 
 type props = {
   hostname: string;
@@ -18,7 +16,7 @@ const Emoji = (prop: { label: string | undefined; symbol: any; }) => (
   </span>
 )
 
-// TODO: Update Links for Github and Available Connector overview.
+// TODO: Update Links for Github.
 
 export const DefaultInfo = ({ hostname }: props) => {
 

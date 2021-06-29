@@ -3,8 +3,6 @@ import { Entry } from "./Entry";
 import { DefaultInfo } from "./DefaultInfo";
 import { Button, Grid, Typography } from "@material-ui/core";
 
-
-
 export const Popup = () => {
 
   const [actions, setActions] = React.useState<Array<string>>([]);
