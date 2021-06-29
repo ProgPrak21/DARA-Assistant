@@ -2,6 +2,7 @@ export const name = 'instagram';
 export const hostname = 'instagram.com';
 export const requestUrl = 'https://www.instagram.com/download/request/';
 export const actions = ['request', 'download']
+export const description = "";
 
 
 export const request = async () => {

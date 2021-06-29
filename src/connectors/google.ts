@@ -2,6 +2,7 @@ export const name = 'google';
 export const hostname = 'google.com';
 export const requestUrl = 'https://takeout.google.com/';
 export const actions = ['request'];
+export const description = "";
 
 // WIP
 export const request = async() => {

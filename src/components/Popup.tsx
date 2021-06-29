@@ -12,7 +12,7 @@ export const Popup = () => {
   const referal = (
     <>
       <span>
-        With our <a className="App-link" target="_blank" href="https://dara-tuberlin.netlify.app/"> Analysing Backend</a>, you 
+        With our <a className="App-link" target="_blank" href="https://dara-tuberlin.netlify.app/"> Analysing Backend</a>, you
         can gain further insight in your requested data.
       </span>
     </>
@@ -35,7 +35,9 @@ export const Popup = () => {
     <>
       <Grid container spacing={2}>
         {actions.length
-          ? <> {actions.map((action: any) => <Entry action={action} />)} </>
+          ? <> {actions.map((action) =>
+            <Entry action={action} />
+          )} </>
           : <DefaultInfo hostname={hostname} />}
         <Grid item xs={12} className="Grid-item">
           {referal}

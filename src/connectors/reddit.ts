@@ -4,6 +4,7 @@ export const name = 'reddit';
 export const hostname = 'reddit.com';
 export const requestUrl = 'https://www.reddit.com/settings/data-request';
 export const actions = ['request'];
+export const description = "";
 
 // WIP
 export const request = async () => {

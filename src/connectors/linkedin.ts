@@ -4,6 +4,8 @@ export const name = 'linkedin';
 export const hostname = 'linkedin.com';
 export const requestUrl = 'https://www.linkedin.com/psettings/data-privacy';
 export const actions = ['request'];
+export const description = "";
+
 
 export const request = async () => {
     const state = document.querySelector<HTMLElement>("span.state[data-state-key='i18n_member_data_state_choice']");

@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import Album from "./Album";
-//import "./popup.css";
+import CardGrid from "./CardGrid";
 
 var mountNode = document.getElementById("overview");
-ReactDOM.render(<Album />, mountNode);
+ReactDOM.render(<CardGrid />, mountNode);

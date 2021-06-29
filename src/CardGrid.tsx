@@ -1,23 +1,14 @@
 import * as React from "react";
 import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardHeader from '@material-ui/core/CardHeader';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { capitalize } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-
-import * as con from "./connectors/.";
-import "./Album.css";
+import { Crd } from "./components/Crd"
+import * as con from "./connectors";
 
 function Copyright() {
   return (
@@ -46,20 +37,7 @@ const useStyles = makeStyles((theme) => ({
   cardGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  cardMedia: {
-    paddingTop: '56.25%', // 16:9
-  },
-  cardContent: {
     flexGrow: 1,
-  },
-  cardHeader: {
-    flexGrow: 1
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
@@ -67,16 +45,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const onClick = (action: string, hostname: string) => {
-  chrome.runtime.sendMessage({ action: action, hostname: hostname, create: true });
-};
-
-export default function Album() {
+export default function CardGrid() {
   const classes = useStyles();
   const connectors = Object.values(con);
 
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
@@ -85,6 +59,7 @@ export default function Album() {
           </Typography>
         </Toolbar>
       </AppBar>
+
       <main>
         {/* Hero unit */}
         <div className={classes.heroContent}>
@@ -120,49 +95,24 @@ export default function Album() {
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
-          <Grid container spacing={4}>
+
+          {/* Card grid */}
+          <Grid
+            container
+            spacing={4}
+            direction="row"
+            justify="flex-start"
+            alignItems="flex-start"
+          >
             {connectors.map((connector) => (
-              <Grid item key={connector.name} xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-
-                  <CardHeader
-                    className={classes.cardHeader}
-                    title={capitalize(connector.name)}
-                    titleTypographyProps={{
-                      variant: "h5",
-                      component: "h2"
-                    }}
-                    avatar={
-                      <Avatar
-                        alt={capitalize(connector.name) + ' logo'}
-                        src={"https://besticon.herokuapp.com/icon?size=32..200..500&url=" + connector.hostname}
-                      />
-                    }
-                  />
-
-                  {/*
-                  <CardContent className={classes.cardContent}>
-                    <Typography>
-                      The following actions are available for this company.
-                    </Typography>
-                  </CardContent>
-                  */}
-
-                  <CardActions>
-
-                    {connector.actions.map((action) => (
-                      <Button size="small" color="primary" variant="contained" onClick={() => onClick(action, connector.hostname)}>
-                        {action}
-                      </Button>
-                    ))}
-
-                  </CardActions>
-                </Card>
-              </Grid>
+              <Crd connector={connector} />
             ))}
           </Grid>
+          {/* End Card grid */}
+
         </Container>
       </main>
+
       {/* Footer */}
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
@@ -175,6 +125,7 @@ export default function Album() {
         <Copyright />
       </footer>
       {/* End footer */}
-    </React.Fragment>
+
+    </>
   );
 }

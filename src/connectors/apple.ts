@@ -4,6 +4,7 @@ export const name = 'apple';
 export const hostname = 'apple.com';
 export const requestUrl = 'https://privacy.apple.com/account';
 export const actions = ['request'];
+export const description = "";
 
 export const request = async() => {
     

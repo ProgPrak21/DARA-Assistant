@@ -21,7 +21,7 @@ export const DefaultInfo = ({ hostname }: props) => {
                     You may send an email based request via <a className="App-link" target="_blank" href="https://www.mydatadoneright.eu/cy/request/type">My Data Done Right</a>.
                 </p>
                 <p>
-                    A list of <a className="App-link" onClick={onClick}>available companies</a>.
+                    <a className="App-link" onClick={onClick}>View available companies</a>.
                 </p>
                 <p>
                     DARA is a community effort, if you think this page supports browser based data access requests, 
