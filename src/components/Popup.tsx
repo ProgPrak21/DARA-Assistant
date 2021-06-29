@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Entry } from "./Entry";
 import { DefaultInfo } from "./DefaultInfo";
-import { Grid } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 
 
 
@@ -9,14 +9,6 @@ export const Popup = () => {
 
   const [actions, setActions] = React.useState<Array<string>>([]);
   const [hostname, setHostname] = React.useState<string>("");
-  const referal = (
-    <>
-      <span>
-        With our <a className="App-link" target="_blank" href="https://dara-tuberlin.netlify.app/"> Analysing Backend</a>, you
-        can gain further insight in your requested data.
-      </span>
-    </>
-  );
 
   if (!actions.length) {
     chrome.runtime.sendMessage({ getActions: true });
@@ -39,8 +31,26 @@ export const Popup = () => {
             <Entry action={action} />
           )} </>
           : <DefaultInfo hostname={hostname} />}
+        
+        <Grid item xs={12}>
+        <Button
+            style={{
+              //textTransform: "none"
+            }}
+            variant='outlined'
+            size='small'
+            href="https://dara-tuberlin.netlify.app/"
+            target="_blank"
+            fullWidth={true}
+          >
+            Analyse
+          </Button>
+        </Grid>
+
         <Grid item xs={12} className="Grid-item">
-          {referal}
+          <Typography variant='caption' align='justify'>
+            Open the DARA analysing tool, to gain further insight in your requested data.
+          </Typography>
         </Grid>
       </Grid>
     </>

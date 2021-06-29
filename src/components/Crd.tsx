@@ -1,9 +1,7 @@
-import { makeStyles, Grid, Card, CardActionArea, CardHeader, capitalize, Avatar, CardActions, Button, CardContent, Typography, Accordion, AccordionDetails, AccordionSummary, Collapse, IconButton } from "@material-ui/core";
+import { makeStyles, Grid, Card, CardActionArea, CardHeader, capitalize, Avatar, CardActions, Button, CardContent, Typography, Collapse } from "@material-ui/core";
 import GetAppIcon from '@material-ui/icons/GetApp';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SendIcon from '@material-ui/icons/Send';
-import clsx from 'clsx';
-
 
 import * as React from "react";
 
@@ -102,41 +100,10 @@ export const Crd = ({ connector }: any) => {
             </CardContent>
           </Collapse>
 
-          {/*
-          <CardContent>
-            <Accordion square={true} >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography className={classes.heading}>Show info</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  {
-                    connector.description ? connector.description
-                      : "To request your data use the \'Request\' Button, form now on our extension takes over and issues the nessecary clicks on the companies data request page."
-                  }
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          </CardContent>
-          /*}
-          {/*    
-          {connector.description &&
-            <CardContent>
-              <Typography variant="h6">
-                {connector.description}
-              </Typography>
-            </CardContent>
-          }
-        */}
           <CardActions>
             {connector.actions.map((action: string) => (
               <Button
                 size="small"
-                color="primary"
                 variant="text"
                 startIcon={
                   action === "request" ? <SendIcon fontSize='inherit' />

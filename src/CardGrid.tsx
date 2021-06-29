@@ -10,6 +10,7 @@ import Link from '@material-ui/core/Link';
 import { Crd } from "./components/Crd"
 import * as con from "./connectors";
 
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -72,7 +73,12 @@ export default function CardGrid() {
 
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
               Here you can find all companies you can currently request your data from with DARA.
-              {/* Todo: JGMD / Github / Your data done right */}
+              {/* 
+              Todo: JGMD / Github / Your data done right 
+              <p>
+                You may send an email based request via <a className="App-link" target="_blank" href="https://www.mydatadoneright.eu/cy/request/type">My Data Done Right</a>.
+              </p>
+              */}
             </Typography>
 
             {/*
