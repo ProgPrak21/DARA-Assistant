@@ -21,7 +21,7 @@ const Emoji = (prop: { label: string | undefined; symbol: any; }) => (
 export const DefaultInfo = ({ hostname }: props) => {
 
   const onClick = () => {
-    chrome.tabs.create({ url: chrome.extension.getURL('overview.html'), active: true });
+    chrome.tabs.create({ url: chrome.runtime.getURL('overview.html'), active: true });
   };
 
   return (
@@ -30,12 +30,8 @@ export const DefaultInfo = ({ hostname }: props) => {
         <Typography> <Emoji label="sad" symbol="😔" /> the current page is not supported. </Typography>
       </Grid>
 
-      <Grid item xs={12}>
-
+      <Grid item xs={12} className="Grid-item">
         <Button
-          style={{
-            //textTransform: "none"
-          }}
           variant='contained'
           size='small'
           color="primary"

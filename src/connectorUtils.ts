@@ -60,6 +60,36 @@ export function waitForElements(selector: string) {
   });
 }
 
+export const execInIframe = async (fun: Function) => {
+
+  const findFrame = () => {
+    const iframes = Array.from(document.querySelectorAll("iframe"));
+    if (iframes) {
+      return iframes.find(iframe => iframe.contentWindow)
+    } else {
+      return undefined;
+    }
+  }
+
+  let iframe = findFrame();
+
+  while (iframe === undefined) {
+    console.log('Iframes still not loaded, trying again.');
+    await pause(1000);
+    iframe = findFrame();
+  }
+
+  console.log('Got Iframe:', iframe);
+
+  if (iframe.contentWindow?.document.readyState === "complete") {
+    fun(iframe);
+  } else {
+    iframe.addEventListener("load", async () => {
+      fun(iframe);
+    });
+  }
+}
+
 export function sendPending() {
   chrome.runtime.sendMessage({ actionResponse: "⏳ A previous request is still pending." });
 }

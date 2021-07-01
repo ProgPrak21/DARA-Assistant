@@ -31,6 +31,15 @@ export const Popup = () => {
   return (
     <>
       <Grid container spacing={2}>
+
+        {response &&
+          <Grid item xs={12} className="Grid-item">
+            <Typography align='justify'>
+              {response}
+            </Typography>
+          </Grid>
+        }
+        
         {description &&
           <Grid item xs={12} className="Grid-item">
             <Typography variant='caption' align='justify'>
@@ -49,18 +58,10 @@ export const Popup = () => {
             : <DefaultInfo hostname={hostname} />
         }
 
-        {response &&
-          <Grid item xs={12} className="Grid-item">
-            <Typography variant='caption' align='justify'>
-              {response}
-            </Typography>
-          </Grid>
-        }
-
         <Grid item xs={12}>
           <Divider variant="middle" />
         </Grid>
-        
+
         <Grid item xs={12}>
           <Button
             style={{

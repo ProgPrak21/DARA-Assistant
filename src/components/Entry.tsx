@@ -21,17 +21,15 @@ export const Entry = ({ action }: props) => {
 
   return (
     <>
-      <Grid item xs={12}>
-        <div className="buttonContainer">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={onClick}
-            fullWidth={true}
-          >
-            {action}
-          </Button>
-        </div>
+      <Grid item xs={12} className="Grid-item">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onClick}
+          fullWidth={true}
+        >
+          {action}
+        </Button>
       </Grid>
       <Grid item xs={12} className="Grid-item">
         <Typography variant='caption' align='justify'>
