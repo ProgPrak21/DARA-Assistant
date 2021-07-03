@@ -74,48 +74,54 @@ export const Crd = ({ connector }: any) => {
             />
           </CardActionArea>
 
-          <Button
-            style={{
-              justifyContent: "left",
-              textTransform: "none"
-            }}
-            className={classes.expand}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-            fullWidth={true}
-            endIcon={<ExpandMoreIcon />}
-          >
-            <Typography align='left' >Show info</Typography>
-          </Button>
-
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Typography>
-                {
-                  connector.description ? connector.description
-                    : "To request your data use the \'Request\' Button, form now on our extension takes over and issues the nessecary clicks on the companies data request page."
-                }
-              </Typography>
-            </CardContent>
-          </Collapse>
-
-          <CardActions>
-            {connector.actions.map((action: string) => (
+          {connector.descpription &&
+            <>
               <Button
-                size="small"
-                variant="text"
-                startIcon={
-                  action === "request" ? <SendIcon fontSize='inherit' />
-                    : action === "download" ? <GetAppIcon fontSize='inherit' />
-                      : <></>
-                }
-                onClick={() => onClick(action, connector.hostname)}
+                style={{
+                  justifyContent: "left",
+                  textTransform: "none"
+                }}
+                className={classes.expand}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+                fullWidth={true}
+                endIcon={<ExpandMoreIcon />}
               >
-                {action}
+                <Typography align='left' >Show info</Typography>
               </Button>
-            ))}
-          </CardActions>
+
+              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                  <Typography>
+                    {
+                      connector.description ? connector.description
+                        : "To request your data use the \'Request\' Button, form now on our extension takes over and issues the nessecary clicks on the companies data request page."
+                    }
+                  </Typography>
+                </CardContent>
+              </Collapse>
+            </>
+          }
+
+          {connector.actions &&
+            <CardActions>
+              {connector.actions.map((action: string) => (
+                <Button
+                  size="small"
+                  variant="text"
+                  startIcon={
+                    action === "request" ? <SendIcon fontSize='inherit' />
+                      : action === "download" ? <GetAppIcon fontSize='inherit' />
+                        : <></>
+                  }
+                  onClick={() => onClick(action, connector.hostname)}
+                >
+                  {action}
+                </Button>
+              ))}
+            </CardActions>
+          }
 
         </Card>
       </Grid>

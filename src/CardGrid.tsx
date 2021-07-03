@@ -9,6 +9,11 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import { Crd } from "./components/Crd"
 import * as con from "./connectors";
+import { jgmd } from "./connectors/jgmy";
+import { fade, InputBase } from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search';
+import { useState } from "react";
+
 
 
 function Copyright() {
@@ -44,44 +49,118 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
+  title: {
+    flexGrow: 1,
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
+  },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(1),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
 }));
+
+
 
 export default function CardGrid() {
   const classes = useStyles();
   const connectors = Object.values(con);
+  const [filter, setFilter] = useState("");
+  const [connectorsJgmd, setConnectorsJgmd] = useState<Array<any>>([]);
+
+  const handleSearchChange = (e: any) => {
+    setFilter(e.target.value);
+  };
+
+  (async () => {
+    const tmp = await jgmd();
+    setConnectorsJgmd(tmp);
+    console.log("jgmdCon:", connectorsJgmd);
+  })();
 
   return (
     <>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
+          <Typography variant="h6" color="inherit" noWrap className={classes.title}>
             DARA Company Overview
           </Typography>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={handleSearchChange}
+            />
+          </div>
         </Toolbar>
       </AppBar>
 
       <main>
         {/* Hero unit */}
-        <div className={classes.heroContent}>
-          <Container maxWidth="sm">
-            {/* 
+        {/*<div className={classes.heroContent}>
+           <Container maxWidth="sm">
+            
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
               DARA Overview
             </Typography>
             */}
-
+        {/*
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
-              Here you can find all companies you can currently request your data from with DARA.
+              All companies currently supported.
               {/* 
               Todo: JGMD / Github / Your data done right 
               <p>
                 You may send an email based request via <a className="App-link" target="_blank" href="https://www.mydatadoneright.eu/cy/request/type">My Data Done Right</a>.
               </p>
-              */}
+              
             </Typography>
-
-            {/*
+            */}
+        {/*
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
@@ -96,13 +175,13 @@ export default function CardGrid() {
                 </Grid>
               </Grid>
             </div>
-            */}
           </Container>
-        </div>
-        <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
+          
+        </div>*/}
+        {/* End hero unit */}
 
-          {/* Card grid */}
+        {/* Card grid */}
+        <Container className={classes.cardGrid} maxWidth="md">
           <Grid
             container
             spacing={4}
@@ -110,13 +189,20 @@ export default function CardGrid() {
             justify="flex-start"
             alignItems="flex-start"
           >
-            {connectors.map((connector) => (
+            {/*connectors.map((connector) => (
+              connector.name.includes(filter) &&
               <Crd connector={connector} />
-            ))}
+            ))*/}
+            {connectorsJgmd &&
+              connectorsJgmd.map((connector: any) => (
+                connector.name.includes(filter) &&
+                <Crd connector={connector} />
+              ))
+            }
           </Grid>
-          {/* End Card grid */}
-
         </Container>
+        {/* End Card grid */}
+
       </main>
 
       {/* Footer */}
