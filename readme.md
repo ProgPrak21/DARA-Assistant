@@ -2,10 +2,10 @@
 
 ## Getting started
 
-Clone react-ts-extension project
+Clone the DARA-Assistant project
 
 ```
-$ git clone https://github.com/ProgPrak21/react-ts-extension
+$ git clone https://github.com/ProgPrak21/DARA-Assistant
 ```
 
 Navigate to the project directory and install the dependencies.
