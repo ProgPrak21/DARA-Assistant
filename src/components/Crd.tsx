@@ -63,12 +63,12 @@ export const Crd = ({ connector }: any) => {
                 //variant: "h6",
                 //component: "h2"
               }}
-              subheader="Data request page"
+              subheader="Data Request Page"
 
               avatar={
                 <Avatar
                   alt={capitalize(connector.name) + ' logo'}
-                  src={"https://besticon.herokuapp.com/icon?size=32..200..500&url=" + connector.hostname}
+                  src={"https://besticon.herokuapp.com/icon?size=32..200..500&url=" + connector.hostnames[0]}
                 />
               }
             />
@@ -93,29 +93,32 @@ export const Crd = ({ connector }: any) => {
             <CardContent>
               <Typography>
                 {
-                  connector.description ? connector.description
+                  connector.description
+                    ? connector.description
                     : "To request your data use the \'Request\' Button, form now on our extension takes over and issues the nessecary clicks on the companies data request page."
                 }
               </Typography>
             </CardContent>
           </Collapse>
 
-          <CardActions>
-            {connector.actions.map((action: string) => (
-              <Button
-                size="small"
-                variant="text"
-                startIcon={
-                  action === "request" ? <SendIcon fontSize='inherit' />
-                    : action === "download" ? <GetAppIcon fontSize='inherit' />
-                      : <></>
-                }
-                onClick={() => onClick(action, connector.hostname)}
-              >
-                {action}
-              </Button>
-            ))}
-          </CardActions>
+          {connector.actions &&
+            <CardActions>
+              {connector.actions.map((action: string) => (
+                <Button
+                  size="small"
+                  variant="text"
+                  startIcon={
+                    action === "request" ? <SendIcon fontSize='inherit' />
+                      : action === "download" ? <GetAppIcon fontSize='inherit' />
+                        : <></>
+                  }
+                  onClick={() => onClick(action, connector.hostnames[0])}
+                >
+                  {action}
+                </Button>
+              ))}
+            </CardActions>
+          }
 
         </Card>
       </Grid>

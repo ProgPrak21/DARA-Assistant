@@ -1,5 +1,5 @@
 export const name = 'instagram';
-export const hostname = 'instagram.com';
+export const hostnames = ['www.instagram.com'];
 export const requestUrl = 'https://www.instagram.com/download/request/';
 export const actions = ['request', 'download']
 export const description = "";
@@ -61,5 +61,4 @@ export const download = async () => {
     let blob = new Blob([responsesJson], { type: 'data:text/json;charset=utf-8m' });
     let url = URL.createObjectURL(blob);
     chrome.runtime.sendMessage({ downloadUrl: url, downloadName: 'instagram_data.json' });
-    chrome.runtime.sendMessage({ actionResponse: "Your Download is ready." });
 }

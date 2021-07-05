@@ -7,12 +7,12 @@
         "noImplicitAny": true,
         "module": "esnext",
         "moduleResolution": "node",
-        "target": "esnext",
+        "target": "es6",
         "allowJs": true,
         "jsx": "react",
     },
     "include": [
-        "./src/**/*",
+        "src",
         "src/custom.d.ts"
     ]
 }

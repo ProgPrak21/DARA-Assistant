@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Button, Typography } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
-import { description } from "../connectors/amazon";
 
 type props = {
   action: string;

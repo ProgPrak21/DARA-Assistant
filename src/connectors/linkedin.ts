@@ -1,7 +1,7 @@
 import * as Utils from '../connectorUtils';
 
 export const name = 'linkedin';
-export const hostname = 'linkedin.com';
+export const hostnames = ['www.linkedin.com', 'de.linkedin.com'];
 export const requestUrl = 'https://www.linkedin.com/psettings/data-privacy';
 export const actions = ['request'];
 export const description = "";

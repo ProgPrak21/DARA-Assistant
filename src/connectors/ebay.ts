@@ -1,7 +1,7 @@
 import * as Utils from '../connectorUtils';
 
 export const name = 'ebay';
-export const hostname = 'ebay.com';
+export const hostnames = ['www.ebay.com'];
 export const requestUrl = 'https://www.sarweb.ebay.com/sar';
 export const actions = ['request'];
 export const description = "";

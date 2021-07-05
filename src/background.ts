@@ -1,34 +1,23 @@
-import * as con from "./connectors/.";
+import * as Con from "./connectors/.";
+import * as Utils from './pageUtils';
 
-async function getCurrentTab() {
-  return new Promise<chrome.tabs.Tab>((resolve, reject) => {
-    chrome.tabs.query(
-      {
-        active: true,
-        currentWindow: true,
-      },
-      (tabs) => {
-        resolve(tabs[0]);
-      }
-    );
+chrome.runtime.onInstalled.addListener(async () => {
+  let connectors = Object.values(Con);
+  const url = "https://raw.githubusercontent.com/justgetmydata/jgmd/master/_data/sites.json"
+
+  let response = await fetch(url).then(response => response.json())
+
+  response.forEach((element: any) => {
+    element.description = element.notes_en;
+    element.requestUrl = element.url;
+    element.hostnames = [(new URL(element.url ?? "")).hostname]
+    element.actions = [];
   });
-}
 
-async function getConnector(message: any): Promise<
-  [any, any, string]
-> {
-  const connectors = Object.values(con);
-  let tab: any, connector: any, hostname: string;
-
-  tab = await getCurrentTab();
-  message.hostname
-    ? hostname = message.hostname
-    : { hostname } = new URL(tab.url ?? "");
-  connector = connectors.find((connector) =>
-    hostname.includes(connector.name)
-  );
-  return [tab, connector, hostname];
-}
+  chrome.storage.local.set({ connectors: response }, function () {
+    console.log('Stored connectors in local storage:', connectors);
+  });
+});
 
 async function loadUrl(tab: chrome.tabs.Tab, requestUrl: string, create: boolean) {
   return new Promise((resolve, reject) => {
@@ -92,9 +81,10 @@ chrome.runtime.onMessage.addListener(async (message) => {
   console.log("Message received in background!", message);
 
   if (message.action) {
-    let [tab, connector, hostname] = await getConnector(message);
+    let tab: any = await Utils.getCurrentTab();
+    const { hostname } = new URL(tab.url ?? "");
+    const connector: any = await Utils.getConnector(hostname);
     if (connector && tab) {
-      console.log(`Found matching ${connector.name} connector.`, connector);
       const { action } = message;
       if (connector.requestUrl) {
         tab = await loadUrl(tab, connector.requestUrl, message.create)
@@ -112,11 +102,14 @@ chrome.runtime.onMessage.addListener(async (message) => {
       console.log(`Could not find connector matching ${tab.url}.`);
     }
 
-  } else if (message.getActions) {
-    const [tab, connector, hostname] = await getConnector(message);
+  } else if (message.getConnector) {
+
+    const tab: any = await Utils.getCurrentTab();
+    const { hostname } = new URL(tab.url ?? "");
+    const connector = await Utils.getConnector(hostname);
     if (connector && tab) {
-      console.log("Sending response", { actions: connector.actions });
-      chrome.runtime.sendMessage({ actions: connector.actions , description: connector.description});
+      console.log("Sending response", { connector: connector });
+      chrome.runtime.sendMessage({ connector: connector });
     } else {
       console.log(
         `Could not find connector matching ${tab.url}.`,
@@ -124,7 +117,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
         tab,
         hostname
       );
-      chrome.runtime.sendMessage({ hostname: hostname });
+      chrome.runtime.sendMessage({ notSupported: true });
     }
 
   } else if (message.downloadUrl) {
@@ -132,5 +125,6 @@ chrome.runtime.onMessage.addListener(async (message) => {
       url: message.downloadUrl,
       filename: message.downloadName,
     });
+    chrome.runtime.sendMessage({ actionResponse: "Your Download is ready." });
   }
 });
