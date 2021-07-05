@@ -9,7 +9,6 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import { Crd } from "./components/Crd"
 import * as con from "./connectors";
-import { jgmd } from "./connectors/jgmy";
 import { fade, InputBase } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import { useState } from "react";
@@ -21,7 +20,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        DARA
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -97,28 +96,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
+function getStorageLocalData(key: string) {
+  // Immediately return a promise and start asynchronous work
+  return new Promise((resolve, reject) => {
+    // Asynchronously fetch all data from storage.sync.
+    chrome.storage.local.get([key], (result) => {
+      // Pass any observed errors down the promise chain.
+      if (chrome.runtime.lastError) {
+        return reject(chrome.runtime.lastError);
+      }
+      // Pass the data retrieved from storage down the promise chain.
+      resolve(result);
+    });
+  });
+}
 
 export default function CardGrid() {
   const classes = useStyles();
-  const connectors = Object.values(con);
   const [filter, setFilter] = useState("");
-  const [connectorsJgmd, setConnectorsJgmd] = useState<Array<any>>([]);
+  const [connectors, setConnectors] = useState<Array<any>>(Object.values(con));
 
   const handleSearchChange = (e: any) => {
     setFilter(e.target.value);
   };
 
   (async () => {
-    const tmp = await jgmd();
-    setConnectorsJgmd(tmp);
-    console.log("jgmdCon:", connectorsJgmd);
+    const merge = (arr1: Array<any>, arr2: Array<any>, prop: string) =>
+      arr1.filter(
+        elArr1 => !arr2.find(
+          elArr2 => elArr1[prop].toUpperCase() === elArr2[prop].toUpperCase()
+        )
+      ).concat(arr2).sort((a, b) => a.name.localeCompare(b.name));
+    const connectors: Array<any> = (await getStorageLocalData ("connectors") as any).connectors
+    const tmp =  merge(connectors, Object.values(con), "name");
+    setConnectors(tmp);
   })();
 
   return (
     <>
       <CssBaseline />
-      <AppBar position="relative">
+      <AppBar position="sticky">
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap className={classes.title}>
             DARA Company Overview
@@ -189,13 +206,9 @@ export default function CardGrid() {
             justify="flex-start"
             alignItems="flex-start"
           >
-            {/*connectors.map((connector) => (
-              connector.name.includes(filter) &&
-              <Crd connector={connector} />
-            ))*/}
-            {connectorsJgmd &&
-              connectorsJgmd.map((connector: any) => (
-                connector.name.includes(filter) &&
+            {connectors &&
+              connectors.map((connector: any) => (
+                connector.name.toLowerCase().includes(filter.toLowerCase()) &&
                 <Crd connector={connector} />
               ))
             }

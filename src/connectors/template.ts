@@ -1,7 +1,7 @@
 import * as Utils from '../connectorUtils';
 
 export const name = '';
-export const hostname = '';
+export const hostnames = [''];
 export const requestUrl = '';
 export const actions = [''];
 export const description = "";

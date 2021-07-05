@@ -1,10 +1,6 @@
 import * as React from "react";
 import { Button, Grid, Typography } from "@material-ui/core";
 
-type props = {
-  hostname: string;
-};
-
 const Emoji = (prop: { label: string | undefined; symbol: any; }) => (
   <span
     className="emoji"
@@ -18,7 +14,7 @@ const Emoji = (prop: { label: string | undefined; symbol: any; }) => (
 
 // TODO: Update Links for Github.
 
-export const DefaultInfo = ({ hostname }: props) => {
+export const NoSupport = () => {
 
   const onClick = () => {
     chrome.tabs.create({ url: chrome.runtime.getURL('overview.html'), active: true });

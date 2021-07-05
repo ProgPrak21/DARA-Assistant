@@ -1,7 +1,7 @@
 import * as Utils from '../connectorUtils';
 
 export const name = 'github';
-export const hostname = 'github.com';
+export const hostnames = ['github.com'];
 export const requestUrl = 'https://github.com/settings/admin';
 export const actions = ['request'];
 export const description = "";

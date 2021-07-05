@@ -1,7 +1,7 @@
 import * as Utils from '../connectorUtils';
 
 export const name = 'facebook';
-export const hostname = 'facebook.com';
+export const hostnames = ['www.facebook.com'];
 export const requestUrl = 'https://www.facebook.com/dyi/?referrer=yfi_settings';
 export const actions = ['request', 'download']
 export const description = "Facebook allows us to download a data archive after creating it, which can take a while.";

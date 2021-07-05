@@ -63,46 +63,43 @@ export const Crd = ({ connector }: any) => {
                 //variant: "h6",
                 //component: "h2"
               }}
-              subheader="Data request page"
+              subheader="Data Request Page"
 
               avatar={
                 <Avatar
                   alt={capitalize(connector.name) + ' logo'}
-                  src={"https://besticon.herokuapp.com/icon?size=32..200..500&url=" + connector.hostname}
+                  src={"https://besticon.herokuapp.com/icon?size=32..200..500&url=" + connector.hostnames[0]}
                 />
               }
             />
           </CardActionArea>
 
-          {connector.descpription &&
-            <>
-              <Button
-                style={{
-                  justifyContent: "left",
-                  textTransform: "none"
-                }}
-                className={classes.expand}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-                fullWidth={true}
-                endIcon={<ExpandMoreIcon />}
-              >
-                <Typography align='left' >Show info</Typography>
-              </Button>
+          <Button
+            style={{
+              justifyContent: "left",
+              textTransform: "none"
+            }}
+            className={classes.expand}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+            fullWidth={true}
+            endIcon={<ExpandMoreIcon />}
+          >
+            <Typography align='left' >Show info</Typography>
+          </Button>
 
-              <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                  <Typography>
-                    {
-                      connector.description ? connector.description
-                        : "To request your data use the \'Request\' Button, form now on our extension takes over and issues the nessecary clicks on the companies data request page."
-                    }
-                  </Typography>
-                </CardContent>
-              </Collapse>
-            </>
-          }
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography>
+                {
+                  connector.description
+                    ? connector.description
+                    : "To request your data use the \'Request\' Button, form now on our extension takes over and issues the nessecary clicks on the companies data request page."
+                }
+              </Typography>
+            </CardContent>
+          </Collapse>
 
           {connector.actions &&
             <CardActions>
@@ -115,7 +112,7 @@ export const Crd = ({ connector }: any) => {
                       : action === "download" ? <GetAppIcon fontSize='inherit' />
                         : <></>
                   }
-                  onClick={() => onClick(action, connector.hostname)}
+                  onClick={() => onClick(action, connector.hostnames[0])}
                 >
                   {action}
                 </Button>

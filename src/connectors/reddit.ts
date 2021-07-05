@@ -1,7 +1,7 @@
 import * as Utils from '../connectorUtils';
 
 export const name = 'reddit';
-export const hostname = 'reddit.com';
+export const hostnames = ['www.reddit.com'];
 export const requestUrl = 'https://www.reddit.com/settings/data-request';
 export const actions = ['request'];
 export const description = "";

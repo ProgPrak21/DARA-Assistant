@@ -1,7 +1,7 @@
 import * as Utils from '../connectorUtils';
 
 export const name = 'spotify';
-export const hostname = 'spotify.com';
+export const hostnames = ['www.spotify.com'];
 export const requestUrl = 'https://www.spotify.com/us/account/privacy/';
 export const actions = ['request'];
 export const description = "Spotify does a bot check which requires user interaction.";
