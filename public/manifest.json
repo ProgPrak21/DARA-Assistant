@@ -1,6 +1,6 @@
 {
-  "name": "DARA",
-  "description": "Data Automated Request Analysis",
+  "name": "DARA Assistant",
+  "description": "A browser extension to help you to request your data.",
   "manifest_version": 2,
   "version": "1.0.0",
   "icons": {
