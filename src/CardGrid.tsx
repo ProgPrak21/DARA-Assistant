@@ -198,8 +198,11 @@ export default function CardGrid() {
           DARA - Data Access Request Analysis
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          The DARA project was innitiated during a programming ..
-          Also check out our Analysis backend!
+          The DARA project was initiated 2021 during a programming course in the Computer Science Bachelor at TU-Berlin.
+        </Typography>
+        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+          {/* TODO: Add Link */}
+          Also check our Analysis backend, it can help you to gain further insights into the requested Data.
         </Typography>
         <Copyright />
       </footer>
