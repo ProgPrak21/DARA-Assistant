@@ -1,22 +1,20 @@
 import * as React from "react";
 import { Entry } from "./Entry";
 import { NoSupport } from "./NoSupport";
-import { Button, Divider, Grid, Typography } from "@material-ui/core";
+import { Button, capitalize, Divider, Grid, Typography } from "@material-ui/core";
 import AssessmentIcon from '@material-ui/icons/Assessment';
-import LinkIcon from '@material-ui/icons/Link';
 import FindInPageIcon from '@material-ui/icons/FindInPage';
+import LinkIcon from '@material-ui/icons/Link';
 
 let connector: any = {};
 
 export const Popup = () => {
-
   const [actions, setActions] = React.useState<Array<string>>([]);
   const [description, setDescription] = React.useState<string>("");
   const [support, setSupport] = React.useState<boolean>(true);
   const [response, setResponse] = React.useState<string>("");
 
-
-  if (Object.keys(connector).length === 0) {
+  React.useEffect(() => {
     chrome.runtime.sendMessage({ getConnector: true });
     chrome.runtime.onMessage.addListener((message) => {
       if (message.connector) {
@@ -32,7 +30,11 @@ export const Popup = () => {
         chrome.runtime.onMessage.removeListener(message);
       }
     });
-  }
+  }, []);
+
+  const onClick = () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL('overview.html'), active: true });
+  };
 
   return (
     <>
@@ -64,44 +66,57 @@ export const Popup = () => {
           <NoSupport />
         }
 
-        <Grid item xs={12}>
-          <Divider variant="middle" />
-        </Grid>
+        {support &&
+          <>
+            <Grid item xs={12}>
+              <Divider variant="middle" />
+            </Grid>
 
-        <Grid item xs={12} style={{textAlign: "left"}}>
+            <Grid item xs={12} style={{ textAlign: "left" }}>
 
-        {connector.requestUrl &&
-            <Button
-              style={{
-                //textTransform: "none"
-              }}
-              variant='text'
-              size='small'
-              href={connector.requestUrl}
-              target="_blank"
-              startIcon={<LinkIcon />}
-            >
-              Data Request Page
-            </Button>}
+              {connector.requestUrl &&
+                <Button
+                  variant='text'
+                  style={{
+                    textTransform: "none"
+                  }}
+                  size='small'
+                  href={connector.requestUrl}
+                  target="_blank"
+                  startIcon={<LinkIcon />}
+                >
+                  {capitalize(connector.name)} Request Page
+                </Button>}
 
-          <Button
-            style={{
-              //textTransform: "none"
-            }}
-            variant='text'
-            size='small'
-            href="https://dara-tuberlin.netlify.app/"
-            target="_blank"
-            title="Open the DARA analysing tool. There you can submit previously requested data to gain further insights."
-            startIcon={<LinkIcon />}
-          >
-            Analyse Tool
-          </Button>
+              {/*<Button
+                style={{
+                  //textTransform: "none"
+                }}
+                variant='text'
+                size='small'
+                href="https://dara-tuberlin.netlify.app/"
+                target="_blank"
+                title="Open the DARA analysing tool. There you can submit previously requested data to gain further insights."
+                startIcon={<LinkIcon />}
+              >
+                Analyse Tool
+              </Button>*/}
 
-          {/*<Typography variant='caption'>
-            Open the DARA analysing tool.
-          </Typography>*/}
-        </Grid>
+              <Button
+                variant='text'
+                style={{
+                  textTransform: "none"
+                }}
+                size='small'
+                onClick={onClick}
+                title=""
+                startIcon={<LinkIcon />}
+              >
+                Supported Companies
+              </Button>
+            </Grid>
+          </>
+        }
       </Grid>
     </>
   );

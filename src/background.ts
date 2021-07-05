@@ -19,80 +19,22 @@ chrome.runtime.onInstalled.addListener(async () => {
   });
 });
 
-async function loadUrl(tab: chrome.tabs.Tab, requestUrl: string, create: boolean) {
-  return new Promise((resolve, reject) => {
-    if (tab?.url === requestUrl) {
-      resolve(tab);
-    } else {
-      if (create) {
-        chrome.tabs.create({ url: requestUrl, active: true }, (createdTab) => {
-          chrome.tabs.onUpdated.addListener(function onUpdated(
-            newTabId,
-            changeInfo,
-            newTab
-          ) {
-            // Make sure the correct url has been loaded
-            if (
-              newTab.status === "complete" &&
-              changeInfo.status === "complete" &&
-              newTabId === createdTab.id
-            ) {
-              chrome.tabs.onUpdated.removeListener(onUpdated);
-              if (newTab.url === requestUrl) {
-                console.log("RequestUrl has been loaded.", newTab, changeInfo);
-                resolve(newTab);
-              } else {
-                console.log("Didn't reach requestUrl.");
-                resolve(false);
-              }
-            }
-          });
-        });
-      } else {
-        chrome.tabs.update({ url: requestUrl }, () => {
-          chrome.tabs.onUpdated.addListener(function onUpdated(
-            newTabId,
-            changeInfo,
-            newTab
-          ) {
-            // Make sure the correct url has been loaded
-            if (
-              newTab.status === "complete" &&
-              changeInfo.status === "complete" &&
-              newTabId === tab.id
-            ) {
-              chrome.tabs.onUpdated.removeListener(onUpdated);
-              if (newTab.url === requestUrl) {
-                console.log("RequestUrl has been loaded.", newTab, changeInfo);
-                resolve(newTab);
-              } else {
-                console.log("Didn't reach requestUrl.");
-                resolve(false);
-              }
-            }
-          });
-        });
-      }
-    }
-  });
-}
-
 chrome.runtime.onMessage.addListener(async (message) => {
   console.log("Message received in background!", message);
 
   if (message.action) {
     let tab: any = await Utils.getCurrentTab();
-    const { hostname } = new URL(tab.url ?? "");
+    const hostname = message.hostname ?? (new URL(tab.url ?? "")).hostname;
     const connector: any = await Utils.getConnector(hostname);
     if (connector && tab) {
       const { action } = message;
       if (connector.requestUrl) {
-        tab = await loadUrl(tab, connector.requestUrl, message.create)
+        tab = await Utils.loadUrl(tab, connector.requestUrl, message.create)
       }
-      if (!tab) {
+      if (tab === false) {
         chrome.runtime.sendMessage({
           actionResponse:
-            "Couldn't load the request page, probably, you need to login first.",
+            "Didn't reach the company's request page. Probably, you need to log in first.",
         });
       } else {
         console.log(`Send Message to content script to execute ${action}`);
@@ -103,7 +45,6 @@ chrome.runtime.onMessage.addListener(async (message) => {
     }
 
   } else if (message.getConnector) {
-
     const tab: any = await Utils.getCurrentTab();
     const { hostname } = new URL(tab.url ?? "");
     const connector = await Utils.getConnector(hostname);
@@ -111,12 +52,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
       console.log("Sending response", { connector: connector });
       chrome.runtime.sendMessage({ connector: connector });
     } else {
-      console.log(
-        `Could not find connector matching ${tab.url}.`,
-        connector,
-        tab,
-        hostname
-      );
+      console.log(`Could not find connector matching ${tab.url}.`);
       chrome.runtime.sendMessage({ notSupported: true });
     }
 

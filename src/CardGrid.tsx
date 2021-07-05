@@ -6,24 +6,17 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
 import { Crd } from "./components/Crd"
 import * as con from "./connectors";
 import { fade, InputBase } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import { useState } from "react";
-
-
+import * as Utils from './pageUtils';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        DARA
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
+      {'Copyright © DARA ' + new Date().getFullYear() + '.'}
     </Typography>
   );
 }
@@ -96,21 +89,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getStorageLocalData(key: string) {
-  // Immediately return a promise and start asynchronous work
-  return new Promise((resolve, reject) => {
-    // Asynchronously fetch all data from storage.sync.
-    chrome.storage.local.get([key], (result) => {
-      // Pass any observed errors down the promise chain.
-      if (chrome.runtime.lastError) {
-        return reject(chrome.runtime.lastError);
-      }
-      // Pass the data retrieved from storage down the promise chain.
-      resolve(result);
-    });
-  });
-}
-
 export default function CardGrid() {
   const classes = useStyles();
   const [filter, setFilter] = useState("");
@@ -120,17 +98,14 @@ export default function CardGrid() {
     setFilter(e.target.value);
   };
 
-  (async () => {
-    const merge = (arr1: Array<any>, arr2: Array<any>, prop: string) =>
-      arr1.filter(
-        elArr1 => !arr2.find(
-          elArr2 => elArr1[prop].toUpperCase() === elArr2[prop].toUpperCase()
-        )
-      ).concat(arr2).sort((a, b) => a.name.localeCompare(b.name));
-    const connectors: Array<any> = (await getStorageLocalData ("connectors") as any).connectors
-    const tmp =  merge(connectors, Object.values(con), "name");
-    setConnectors(tmp);
-  })();
+  React.useEffect(() => {
+    (async () => {
+      let connectors: Array<any> = (await Utils.getStorageLocalData("connectors") as any).connectors
+      connectors = Utils.merge(connectors, Object.values(con), "name");
+      console.log("Merged connectors.")
+      setConnectors(connectors);
+    })();
+  }, []);
 
   return (
     <>
@@ -215,7 +190,6 @@ export default function CardGrid() {
           </Grid>
         </Container>
         {/* End Card grid */}
-
       </main>
 
       {/* Footer */}
@@ -230,7 +204,6 @@ export default function CardGrid() {
         <Copyright />
       </footer>
       {/* End footer */}
-
     </>
   );
 }

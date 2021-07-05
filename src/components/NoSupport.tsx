@@ -12,10 +12,7 @@ const Emoji = (prop: { label: string | undefined; symbol: any; }) => (
   </span>
 )
 
-// TODO: Update Links for Github.
-
 export const NoSupport = () => {
-
   const onClick = () => {
     chrome.tabs.create({ url: chrome.runtime.getURL('overview.html'), active: true });
   };
@@ -34,18 +31,16 @@ export const NoSupport = () => {
           onClick={onClick}
           fullWidth={true}
         >
-          View Supported Pages
+          Supported Companies
         </Button>
       </Grid>
 
       <Grid item xs={12} className="Grid-item">
         <Typography variant='caption' align='justify'>
           DARA is a community effort, if you think this page supports browser based data access requests,
-          please consider <a className="App-link" target="_blank" href="https://github.com/ProgPrak21/react-ts-extension"> contributing</a>.
+          please consider <a className="App-link" target="_blank" href="https://github.com/ProgPrak21/DARA-Assistant"> contributing</a>.
         </Typography>
       </Grid>
     </>
   );
 };
-
-

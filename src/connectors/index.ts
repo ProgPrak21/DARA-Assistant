@@ -11,3 +11,13 @@ export * as reddit from './reddit'
 export * as microsoft from './microsoft'
 export * as google from './google'
 export * as spotify from './spotify'
+
+export interface DaraConnector {
+  name: string;
+  hostname: string;
+  requestUrl: string;
+  actions: Array<string>;
+  check?: Function;
+  request?: Function;
+  download?: Function;
+};

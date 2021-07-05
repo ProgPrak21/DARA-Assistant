@@ -1,15 +1,20 @@
 import { AppBar, Grid, IconButton, Toolbar, Typography } from "@material-ui/core";
 import InfoIcon from '@material-ui/icons/Info';
+import AppsIcon from '@material-ui/icons/Apps';
 import * as React from "react";
 import "./App.css";
 import { Popup } from "./components/Popup";
 
 const App = () => {
+  const onClick = () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL('overview.html'), active: true });
+  };
+
   return (
     <div className="App">
       <header>
         <AppBar position="static">
-          <Toolbar variant="dense">
+          <Toolbar variant="regular">
             <Grid
               justify="space-between"
               container
@@ -20,6 +25,13 @@ const App = () => {
                 </Typography>
               </Grid>
               <Grid item>
+                {/*<IconButton
+                  onClick={onClick}
+                  color="inherit"
+                  size="small"
+                >
+                  <AppsIcon />
+                </IconButton>*/}
                 <IconButton
                   href="https://dara-tuberlin.netlify.app/"
                   target="_blank"
