@@ -1,4 +1,5 @@
-# DARA Assistant Chrome Extension
+# DARA Assistant Browser Extension
+The DARA Assistant browser extension helps you to request your data from various companies. It can execute the clicks necessary to issue a data request on the corresponding data request page.
 
 ## Getting started
 
