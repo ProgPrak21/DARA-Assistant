@@ -26,5 +26,5 @@
   "background": {
     "scripts": ["background.js"]
   },
-  "permissions": ["activeTab", "tabs", "downloads", "storage"]
+  "permissions": ["tabs", "downloads", "storage"]
 }
