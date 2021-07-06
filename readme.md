@@ -1,7 +1,12 @@
 # DARA Assistant Browser Extension
 The DARA Assistant browser extension helps you to request your data from various companies. It can execute the clicks necessary to issue a data request on the corresponding data request page.
 
-## Getting started
+## Installation
+
+- On Chrome, install via [Chrome web store](https://chrome.google.com/webstore/detail/dara-assistant/heolgaalbnnelipfhbccbkdohecmaimo)
+- On Firefox, install via [Firefox add-ons](https://addons.mozilla.org/en-US/firefox/addon/dara/)
+
+## Development Setup
 
 Clone the DARA-Assistant project
 
