@@ -19,10 +19,11 @@ export function getStorageLocalData(key: string): Promise<{ connectors: Array<an
   return new Promise((resolve, reject) => {
     // Asynchronously fetch all data from storage.sync.
     chrome.storage.local.get([key], (result) => {
-      if (chrome.runtime.lastError) {
-        return reject(chrome.runtime.lastError);
-      }
+      if (chrome.runtime.lastError)
+        reject(chrome.runtime.lastError);
+
       // Pass the data retrieved from storage down the promise chain.
+      result = result[key] ?? [];
       resolve(result);
     });
   });
@@ -42,7 +43,7 @@ export const merge = (arr1: Array<any>, arr2: Array<any>, prop: string) =>
  */
 export async function getConnector(hostname: string): Promise<object> {
   const connectorsDara = Object.values(Con);
-  const connectorsJgmd = (await getStorageLocalData("connectors") as any).connectors;
+  const connectorsJgmd: any = await getStorageLocalData("connectors");
 
   const connectors = merge(connectorsJgmd, connectorsDara, "name");
   console.log("Merged connectors:", connectors);

@@ -48,3 +48,13 @@ If you want to help the project, you can contribute a company \"connector\". Whi
 6. If everything works well, commit your changes on your branch and send a pull request via Github.
 
 Thank you very much!
+
+
+## Permissions
+
+Here is the what and why concerning permissions.
+
+- tabs: We want to inject a click path into a tab opened via `chrome.tabs.create`.
+- download: Some companies offer direct access to the data requested and we want to offer a download to the user.
+- storage: At startup we fetch data from https://justgetmydata.com/# and store it for later display.
+- host permissions: Unfortunately there seems to be no better way than to request the full host permissions. The extension currently injects code into over 40 different company sites - and since it seems to be not possible to declare the host permissions dynamically, we must default to requesting everything.

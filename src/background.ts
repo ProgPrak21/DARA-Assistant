@@ -1,7 +1,7 @@
 import * as Con from "./connectors/.";
 import * as Utils from "./pageUtils";
 
-chrome.runtime.onInstalled.addListener(async () => {
+chrome.runtime.onStartup.addListener(async () => {
   let connectors = Object.values(Con);
   const url = "https://raw.githubusercontent.com/justgetmydata/jgmd/master/_data/sites.json"
 

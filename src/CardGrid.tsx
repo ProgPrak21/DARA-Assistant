@@ -100,7 +100,7 @@ export default function CardGrid() {
 
   React.useEffect(() => {
     (async () => {
-      let connectors: Array<any> = (await Utils.getStorageLocalData("connectors") as any).connectors
+      let connectors: any = await Utils.getStorageLocalData("connectors")
       connectors = Utils.merge(connectors, Object.values(con), "name");
       console.log("Merged connectors.")
       setConnectors(connectors);
