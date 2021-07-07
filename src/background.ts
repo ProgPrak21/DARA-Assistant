@@ -45,10 +45,17 @@ const handleAction = async (message: any) => {
 const handleGetConnector = async () => {
   const tab: any = await Utils.getCurrentTab();
   const { hostname } = new URL(tab.url ?? "");
-  const connector = await Utils.getConnector(hostname);
+  const connector: any = await Utils.getConnector(hostname);
   if (connector && tab) {
-    console.log("Sending response", { connector: connector });
-    chrome.runtime.sendMessage({ connector: connector });
+    console.log("Sending response:", { connector: connector });
+    chrome.runtime.sendMessage({
+      connector: {
+        name: connector.name,
+        description: connector.description,
+        requestUrl: connector.requestUrl,
+        actions: connector.actions,
+      }
+    });
   } else {
     console.log(`Could not find connector matching ${tab.url}.`);
     chrome.runtime.sendMessage({ notSupported: true });

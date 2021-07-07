@@ -31,7 +31,7 @@ export const NoSupport = () => {
           onClick={onClick}
           fullWidth={true}
         >
-          Supported Companies
+          Supported Pages
         </Button>
       </Grid>
 
