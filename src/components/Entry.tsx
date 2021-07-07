@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Button, Typography } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 
 export const Entry = ({ action }: { action: string }) => {
   const onClick = () => {
@@ -21,7 +20,7 @@ export const Entry = ({ action }: { action: string }) => {
       </Grid>
       <Grid item xs={12} className="Grid-item">
         <Typography variant='caption' align='justify'>
-          {'Click ' + action.toUpperCase() + ' let DARA ' + action + ' your data for you. You may need to login first.'}
+          {'Click ' + action.toUpperCase() + ' to let DARA ' + action + ' your data for you. You may need to login first.'}
         </Typography>
       </Grid>
     </>

@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Crd } from "./components/Crd"
 import * as Con from "./connectors";
-import { fade, InputBase } from "@material-ui/core";
+import { fade, InputBase, Link } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import { useState } from "react";
 import * as Utils from './pageUtils';
@@ -24,13 +24,6 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
-  },
-  heroContent: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4),
   },
   cardGrid: {
     paddingTop: theme.spacing(8),
@@ -101,9 +94,9 @@ export default function CardGrid() {
   React.useEffect(() => {
     (async () => {
       const connectorsDara = Object.values(Con);
-      const jgmdConnectors: any = await Utils.getStorageLocalData("jgmdConnectors")
+      const jgmdConnectors: any = await Utils.getStorageLocalData("jgmdConnectors");
       const connectors = Utils.merge(jgmdConnectors, connectorsDara, "name");
-      console.log("Merged connectors.")
+      console.log("Merged connectors.");
       setConnectors(connectors);
     })();
   }, []);
@@ -134,45 +127,6 @@ export default function CardGrid() {
       </AppBar>
 
       <main>
-        {/* Hero unit */}
-        {/*<div className={classes.heroContent}>
-           <Container maxWidth="sm">
-            
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              DARA Overview
-            </Typography>
-            */}
-        {/*
-            <Typography variant="h5" align="center" color="textSecondary" paragraph>
-              All companies currently supported.
-              {/* 
-              Todo: JGMD / Github / Your data done right 
-              <p>
-                You may send an email based request via <a className="App-link" target="_blank" href="https://www.mydatadoneright.eu/cy/request/type">My Data Done Right</a>.
-              </p>
-              
-            </Typography>
-            */}
-        {/*
-            <div className={classes.heroButtons}>
-              <Grid container spacing={2} justify="center">
-                <Grid item>
-                  <Button variant="contained" color="primary">
-                    Main call to action
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant="outlined" color="primary">
-                    Secondary action
-                  </Button>
-                </Grid>
-              </Grid>
-            </div>
-          </Container>
-          
-        </div>*/}
-        {/* End hero unit */}
-
         {/* Card grid */}
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid
@@ -202,8 +156,10 @@ export default function CardGrid() {
           The DARA project was initiated 2021 during a programming course in the Computer Science Bachelor at TU-Berlin.
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          {/* TODO: Add Link */}
-          Also check our Analysis backend, it can help you to gain further insights into the requested Data.
+          Most of the descriptions displayed under "Show info" are retrieved from <Link color="primary" target="_blank" href="https://justgetmydata.com/#">JustGetMyData.com</Link>.
+        </Typography>
+        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+          Also check our <Link color="primary" target="_blank" href="https://dara-tuberlin.netlify.app/#solution">Analysis backend</Link>, it can help you to gain further insights into the requested Data.
         </Typography>
         <Copyright />
       </footer>

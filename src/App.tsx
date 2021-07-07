@@ -1,15 +1,10 @@
 import { AppBar, Grid, IconButton, Toolbar, Typography } from "@material-ui/core";
 import InfoIcon from '@material-ui/icons/Info';
-import AppsIcon from '@material-ui/icons/Apps';
 import * as React from "react";
 import "./App.css";
 import { Popup } from "./components/Popup";
 
-const App = () => {
-  const onClick = () => {
-    chrome.tabs.create({ url: chrome.runtime.getURL('overview.html'), active: true });
-  };
-
+export const App = () => {
   return (
     <div className="App">
       <header>
@@ -24,14 +19,8 @@ const App = () => {
                   DARA Assistant
                 </Typography>
               </Grid>
+
               <Grid item>
-                {/*<IconButton
-                  onClick={onClick}
-                  color="inherit"
-                  size="small"
-                >
-                  <AppsIcon />
-                </IconButton>*/}
                 <IconButton
                   href="https://dara-tuberlin.netlify.app/"
                   target="_blank"
@@ -42,13 +31,10 @@ const App = () => {
                   <InfoIcon />
                 </IconButton>
               </Grid>
+
             </Grid>
           </Toolbar>
         </AppBar>
-        {/*
-        <img src="./icon-128.png" className="App-logo" alt="logo" />
-        <span>DARA Data Request Assistant</span>
-        */}
       </header>
       <body className="App-body">
         <Popup />
@@ -56,5 +42,3 @@ const App = () => {
     </div>
   );
 };
-
-export default App;

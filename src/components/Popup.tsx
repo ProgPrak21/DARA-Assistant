@@ -2,8 +2,6 @@ import * as React from "react";
 import { Entry } from "./Entry";
 import { NoSupport } from "./NoSupport";
 import { Button, capitalize, Divider, Grid, Typography } from "@material-ui/core";
-import AssessmentIcon from '@material-ui/icons/Assessment';
-import FindInPageIcon from '@material-ui/icons/FindInPage';
 import LinkIcon from '@material-ui/icons/Link';
 
 let connector: any = {};
@@ -87,20 +85,6 @@ export const Popup = () => {
                 >
                   {capitalize(connector.name)} Request Page
                 </Button>}
-
-              {/*<Button
-                style={{
-                  //textTransform: "none"
-                }}
-                variant='text'
-                size='small'
-                href="https://dara-tuberlin.netlify.app/"
-                target="_blank"
-                title="Open the DARA analysing tool. There you can submit previously requested data to gain further insights."
-                startIcon={<LinkIcon />}
-              >
-                Analyse Tool
-              </Button>*/}
 
               <Button
                 variant='text'

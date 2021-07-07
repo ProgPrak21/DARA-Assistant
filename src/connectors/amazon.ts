@@ -13,5 +13,5 @@ export const request = async () => {
   (await Utils.waitForElement("a[id='aedu-dsar-data-categories-dropdown_15']"))?.click();
   await Utils.pause(200);
   (await Utils.waitForElement("input.a-button-input[aria-labelledby='aedu-dsar-create-btn-announce']"))?.click();
-  chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
+  Utils.sendSuccess();
 };
