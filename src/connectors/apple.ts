@@ -1,7 +1,7 @@
 import * as Utils from '../connectorUtils';
 
 export const name = 'apple';
-export const hostnames = ['www.apple.com'];
+export const hostnames = ['www.apple.com', 'privacy.apple.com'];
 export const requestUrl = 'https://privacy.apple.com/account';
 export const actions = ['request'];
 export const description = "";

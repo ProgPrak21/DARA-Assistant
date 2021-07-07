@@ -1,7 +1,7 @@
 import * as Utils from '../connectorUtils';
 
 export const name = 'microsoft';
-export const hostnames = ['www.microsoft.com'];
+export const hostnames = ['www.microsoft.com','account.microsoft.com'];
 export const requestUrl = 'https://account.microsoft.com/privacy/download-data';
 export const actions = ['request'];
 export const description = "To download data from apps like OneDrive and Microsoft Teams, seperate requests must be send.";

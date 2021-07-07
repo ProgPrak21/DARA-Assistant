@@ -1,7 +1,7 @@
 import * as Utils from '../connectorUtils';
 
 export const name = 'google';
-export const hostnames = ['www.google.com'];
+export const hostnames = ['www.google.com', 'takeout.google.com'];
 export const requestUrl = 'https://takeout.google.com/';
 export const actions = ['request'];
 export const description = "";
