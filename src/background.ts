@@ -1,22 +1,33 @@
-import * as Con from "./connectors/.";
 import * as Utils from "./pageUtils";
 
-chrome.runtime.onStartup.addListener(async () => {
-  let connectors = Object.values(Con);
-  const url = "https://raw.githubusercontent.com/justgetmydata/jgmd/master/_data/sites.json"
+const setupJgmdConnectors = async () => {
 
-  let response = await fetch(url).then(responseRaw => responseRaw.json())
+  const jgmdConnectors: any = await Utils.getStorageLocalData("jgmdConnectors");
 
-  response.forEach((element: any) => {
-    element.description = element.notes_en;
-    element.requestUrl = element.url;
-    element.hostnames = [(new URL(element.url ?? "")).hostname]
-    element.actions = [];
-  });
+  if (Array.isArray(jgmdConnectors) && !jgmdConnectors.length) {
+    const url = "https://raw.githubusercontent.com/justgetmydata/jgmd/master/_data/sites.json"
 
-  chrome.storage.local.set({ connectors: response }, function () {
-    console.log('Stored connectors in local storage:', connectors);
-  });
+    let response = await fetch(url).then(responseRaw => responseRaw.json())
+
+    response.forEach((element: any) => {
+      element.description = element.notes_en;
+      element.requestUrl = element.url;
+      element.hostnames = [(new URL(element.url ?? "")).hostname]
+      element.actions = [];
+    });
+
+    chrome.storage.local.set({ jgmdConnectors: response }, function () {
+      console.log('Stored connectors in local storage:', response);
+    });
+  }
+}
+
+chrome.runtime.onStartup.addListener(() => {
+  setupJgmdConnectors();
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+  setupJgmdConnectors();
 });
 
 const handleAction = async (message: any) => {

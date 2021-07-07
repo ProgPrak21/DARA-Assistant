@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Crd } from "./components/Crd"
-import * as con from "./connectors";
+import * as Con from "./connectors";
 import { fade, InputBase } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import { useState } from "react";
@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CardGrid() {
   const classes = useStyles();
   const [filter, setFilter] = useState("");
-  const [connectors, setConnectors] = useState<Array<any>>(Object.values(con));
+  const [connectors, setConnectors] = useState<Array<any>>(Object.values(Con));
 
   const handleSearchChange = (e: any) => {
     setFilter(e.target.value);
@@ -100,8 +100,9 @@ export default function CardGrid() {
 
   React.useEffect(() => {
     (async () => {
-      let connectors: any = await Utils.getStorageLocalData("connectors")
-      connectors = Utils.merge(connectors, Object.values(con), "name");
+      const connectorsDara = Object.values(Con);
+      const jgmdConnectors: any = await Utils.getStorageLocalData("jgmdConnectors")
+      const connectors = Utils.merge(jgmdConnectors, connectorsDara, "name");
       console.log("Merged connectors.")
       setConnectors(connectors);
     })();

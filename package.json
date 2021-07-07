@@ -1,14 +1,14 @@
 {
   "name": "dara-assistant",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.3",
+  "description": "A browser extension to help you to request your data.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "start": "webpack --watch"
   },
   "keywords": [],
-  "license": "ISC",
+  "license": "EUPL-1.2",
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",

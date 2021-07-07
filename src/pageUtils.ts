@@ -14,7 +14,7 @@ export async function getCurrentTab() {
   });
 }
 
-export function getStorageLocalData(key: string): Promise<{ connectors: Array<any> } | chrome.runtime.LastError> {
+export function getStorageLocalData(key: string): Promise< Array<any>  | chrome.runtime.LastError> {
   // Immediately return a promise and start asynchronous work
   return new Promise((resolve, reject) => {
     // Asynchronously fetch all data from storage.sync.
@@ -43,9 +43,9 @@ export const merge = (arr1: Array<any>, arr2: Array<any>, prop: string) =>
  */
 export async function getConnector(hostname: string): Promise<object> {
   const connectorsDara = Object.values(Con);
-  const connectorsJgmd: any = await getStorageLocalData("connectors");
+  const jgmdConnectors: any = await getStorageLocalData("jgmdConnectors");
 
-  const connectors = merge(connectorsJgmd, connectorsDara, "name");
+  const connectors = merge(jgmdConnectors, connectorsDara, "name");
   console.log("Merged connectors:", connectors);
   const connector = connectors.find((connector) =>
     connector.hostnames.find((hostnameCon: string) => hostnameCon === hostname)
