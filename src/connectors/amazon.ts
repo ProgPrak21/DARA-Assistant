@@ -1,7 +1,7 @@
 import * as Utils from '../connectorUtils';
 
 export const name = 'amazon';
-export const hostnames = ['www.amazon.com'];
+export const hostnames = ['www.amazon.com','www.amazon.de'];
 export const requestUrl = 'https://www.amazon.com/gp/privacycentral/dsar/preview.html';
 export const actions = ['request'];
 export const description = "";
