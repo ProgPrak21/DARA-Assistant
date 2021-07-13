@@ -1,3 +1,5 @@
+import * as Utils from '../connectorUtils';
+
 export const name = 'instagram';
 export const hostnames = ['www.instagram.com'];
 export const requestUrl = 'https://www.instagram.com/download/request/';
@@ -6,7 +8,8 @@ export const description = "";
 
 
 export const request = async () => {
-    const radio = document.getElementById('igCoreRadioButtonoutputFormatJSON')
+
+    const radio = await Utils.waitForElement("[id='igCoreRadioButtonoutputFormatJSON']");
     if (radio) {
         (<any>document.getElementById('igCoreRadioButtonoutputFormatJSON')).checked = true;
         (<any>document.querySelector('form > div > button')).click();
@@ -58,7 +61,7 @@ export const download = async () => {
     const responsesJson = JSON.stringify(responses, null, 4);
 
     // For now we can offer a download:
-    let blob = new Blob([responsesJson], { type: 'data:text/json;charset=utf-8m' });
+    let blob = new Blob([responsesJson], { type: 'text/json;charset=utf-8m' });
     let url = URL.createObjectURL(blob);
     chrome.runtime.sendMessage({ downloadUrl: url, downloadName: 'instagram_data.json' });
 }
