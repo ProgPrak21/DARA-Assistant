@@ -2,11 +2,8 @@
 
 The DARA Assistant browser extension helps you to request your data from various companies. 
 It can execute the clicks necessary to issue a data request on the corresponding data request page.
-<<<<<<< HEAD
 The Assistant currently supports just shy of 50 companies and offers fully automated data requests for over 10 of them. The other companies are annotated with descriptions from [justgetmydata.com](https://justgetmydata.com). The Assistant is a non-profit, hobbyist project - all code is open source and waiting for your contribution. 
-=======
-The Assistant currently supports just shy of 50 companies and offers fully automated data requests for over 10 of them. The other companies are annotated with descriptions from [justgetmydata.com](https://justgetmydata.com). The Assistant is a non-profit, hobbyist project -- all code is open source and waiting for your contribution. 
->>>>>>> de8eea4 (Add optional permission flow)
+
 
 ## Installation
 
