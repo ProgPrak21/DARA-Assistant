@@ -38,9 +38,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const onClick = (action: string, hostnames: Array<string>) => {
+  const hostnamesMatcher: Array<string> = [];
+  hostnames.forEach((el) => {
+    const matcher = `*://${el}/`;
+    hostnamesMatcher.push(matcher);
+  }) 
   chrome.permissions.request({
     permissions: ['tabs'],
-    origins: [`*://${hostnames[0]}/`]
+    origins: hostnamesMatcher
   }, function (granted) {
     // The callback argument will be true if the user granted the permissions.
     if (granted) {
