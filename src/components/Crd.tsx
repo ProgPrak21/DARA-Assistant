@@ -37,9 +37,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const onClick = (action: string, hostname: string) => {
-  chrome.runtime.sendMessage({ action: action, hostname: hostname, create: true });
-};
+const onClick = (action: string, hostnames: Array<string>) => {
+  chrome.permissions.request({
+    permissions: ['tabs'],
+    origins: [`*://${hostnames[0]}/`]
+  }, function (granted) {
+    // The callback argument will be true if the user granted the permissions.
+    if (granted) {
+      chrome.runtime.sendMessage({ action: action, hostname: hostnames[0], create: true });
+    }
+  });
+}
 
 
 export const Crd = ({ connector }: any) => {
@@ -112,7 +120,7 @@ export const Crd = ({ connector }: any) => {
                       : action === "download" ? <GetAppIcon fontSize='inherit' />
                         : <></>
                   }
-                  onClick={() => onClick(action, connector.hostnames[0])}
+                  onClick={() => onClick(action, connector.hostnames)}
                 >
                   {action}
                 </Button>

@@ -14,7 +14,7 @@ export async function getCurrentTab() {
   });
 }
 
-export function getStorageLocalData(key: string): Promise< Array<any>  | chrome.runtime.LastError> {
+export function getStorageLocalData(key: string): Promise<Array<any> | chrome.runtime.LastError> {
   // Immediately return a promise and start asynchronous work
   return new Promise((resolve, reject) => {
     // Asynchronously fetch all data from storage.sync.
@@ -117,5 +117,16 @@ export async function loadUrl(tab: chrome.tabs.Tab, requestUrl: string, create: 
         });
       }
     }
+  });
+}
+
+export async function injectContentScript(tabId: number) {
+  return new Promise(resolve => {
+    chrome.tabs.executeScript(
+      tabId,
+      { file: 'content.js' },
+      () => {
+        resolve(true);
+      })
   });
 }

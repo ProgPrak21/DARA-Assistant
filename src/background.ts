@@ -45,6 +45,7 @@ const handleAction = async (message: any) => {
           "Didn't reach the company's request page. Probably, you need to log in first.",
       });
     } else {
+      await Utils.injectContentScript(tab.id);
       console.log(`Send Message to content script to execute ${action}`);
       chrome.tabs.sendMessage(<number>tab.id, { action: action });
     }
