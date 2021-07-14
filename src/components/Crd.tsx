@@ -108,7 +108,7 @@ export const Crd = ({ connector }: any) => {
                 {
                   connector.description
                     ? connector.description
-                    : "To request your data use the \'Request\' Button, form now on our extension takes over and issues the nessecary clicks on the companies data request page."
+                    : "To request your data use the \'Request\' Button. Now the Assistant takes over and issues the nessecary clicks on the companies data request page."
                 }
               </Typography>
             </CardContent>
