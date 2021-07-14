@@ -1,4 +1,5 @@
-export * as amazon from './amazon'
+export * as amazon from './amazon.com'
+export * as amazonDe from './amazon.de'
 export * as apple from './apple'
 export * as ebay from './ebay'
 export * as facebook from './facebook'

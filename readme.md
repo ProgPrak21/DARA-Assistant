@@ -4,7 +4,6 @@ The DARA Assistant browser extension helps you to request your data from various
 It can execute the clicks necessary to issue a data request on the corresponding data request page.
 The Assistant currently supports just shy of 50 companies and offers fully automated data requests for over 10 of them. The other companies are annotated with descriptions from [justgetmydata.com](https://justgetmydata.com). The Assistant is a non-profit, hobbyist project - all code is open source and waiting for your contribution. 
 
-
 ## Installation
 
 - On Chrome, install via the [Chrome Web Store](https://chrome.google.com/webstore/detail/dara-assistant/heolgaalbnnelipfhbccbkdohecmaimo).
@@ -66,5 +65,9 @@ The Assistant requires quite a lot of permissions, following I listed all permis
 - storage: At startup, we fetch data from https://justgetmydata.com/# and store it for later display.
 - activeTab: To be able to inject our content Script, we first need to have access to the corresponding tab - because of the activeTab permission, this access is granted to us when the user clicks on the extension icon.
 - optional-permissions: When using the company overview page to directly issue an automated request, we need additional permissions for the corresponding newly created page, since we can't rely on activeTab for a programmatically opened tab.
-   - tabs: We want to inject a click path into a tab opened via `chrome.tabs.create`.
+   - tabs: If a user chooses to issue a request directly from the company overview page, we need to inject a click path into a tab opened via `chrome.tabs.create`. This permission is optional and only requested for this particular case.
    - origin: We also need the permission to access the specific URL of the newly created tab, we plan to inject our content script into.
+
+## Further Details 
+
+If you are interessted in the architecture and underworkings and t
