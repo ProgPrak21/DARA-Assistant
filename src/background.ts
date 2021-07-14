@@ -88,7 +88,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
     handleAction(message);
   } else if (message.getConnector) {
     handleGetConnector();
-  } else if (message.downloadUrl) {
+  } else if (message.download) {
     handleDownload(message);
   }
 });

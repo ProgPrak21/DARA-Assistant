@@ -70,4 +70,4 @@ The Assistant requires quite a lot of permissions, following I listed all permis
 
 ## Further Details 
 
-If you are interessted in the architecture and underworkings and t
+If you are interessted in the architecture and technical background of the extension please [have a look into the report](report.md).

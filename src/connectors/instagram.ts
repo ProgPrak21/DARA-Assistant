@@ -63,5 +63,5 @@ export const download = async () => {
     // For now we can offer a download:
     let blob = new Blob([responsesJson], { type: 'text/json;charset=utf-8m' });
     let url = URL.createObjectURL(blob);
-    chrome.runtime.sendMessage({ downloadUrl: url, downloadName: 'instagram_data.json' });
+    chrome.runtime.sendMessage({ download: true, downloadUrl: url, downloadName: 'instagram_data.json' });
 }

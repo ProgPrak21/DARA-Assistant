@@ -1,4 +1,5 @@
 import * as Con from './connectors/.';
+import type { DaraConnector as Connector } from './connectors/.';
 
 export async function getCurrentTab() {
   return new Promise<chrome.tabs.Tab>((resolve, reject) => {
@@ -14,7 +15,7 @@ export async function getCurrentTab() {
   });
 }
 
-export function getStorageLocalData(key: string): Promise<Array<any> | chrome.runtime.LastError> {
+export function getStorageLocalData(key: string): Promise<Array<Connector> | chrome.runtime.LastError> {
   // Immediately return a promise and start asynchronous work
   return new Promise((resolve, reject) => {
     // Asynchronously fetch all data from storage.sync.
@@ -29,7 +30,16 @@ export function getStorageLocalData(key: string): Promise<Array<any> | chrome.ru
   });
 }
 
-export const merge = (arr1: Array<any>, arr2: Array<any>, prop: string) =>
+/**
+ * Merges two arrays. The elements from arr1 
+ * which have an equivalent prop with arr2 are 
+ * replaced in the resulting array.
+ * @param {Array<any>} arr1 Get replaced.
+ * @param {Array<any>} arr2 Is preserved.
+ * @param {string} prop The property used for replacement.
+ * @returns {Array<any>} A merged array.
+ */
+export const merge = (arr1: Array<any>, arr2: Array<any>, prop: string): Array<any> =>
   arr1.filter(
     elArr1 => !arr2.find(
       elArr2 => elArr1[prop].toUpperCase() === elArr2[prop].toUpperCase()
@@ -38,10 +48,10 @@ export const merge = (arr1: Array<any>, arr2: Array<any>, prop: string) =>
 
 /**
  * Finds a connector with matching hostname.
- * @param {string} hostname 
- * @returns {Promise<object>} connector
+ * @param {string} hostname The hostname used to find the connector.
+ * @returns {Promise<Connector | undefined>} connector.
  */
-export async function getConnector(hostname: string): Promise<object> {
+export async function getConnector(hostname: string): Promise<Connector | undefined> {
   const connectorsDara = Object.values(Con);
   const jgmdConnectors: any = await getStorageLocalData("jgmdConnectors");
 
