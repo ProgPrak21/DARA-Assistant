@@ -57,7 +57,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
   console.log("Message received in background!", message);
   if (message.action) {
     handleAction(message);
-  } else if (message.Connector) {
+  } else if (message.getConnector) {
     handleGetConnector();
   } else if (message.download) {
     handleDownload(message);
