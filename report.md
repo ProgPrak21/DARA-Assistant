@@ -18,15 +18,15 @@ When you plan to build a browser extension you quickly find that there is basica
 ## Concept / Functionality / Userstory
 
 Generally our extension should enable the following flow: A Person interested in requesting their data visits a company's website, they click on the assistant icon and get offered the available options for this company — if an automated request is available, a request button is displayed. After clicking the button the extension takes over, opens the corresponding data request page and injects the necessary clicks to send of the data request.
-<img align="right" width="100" height="100" src="img/popup">
+<img align="right" width="100" height="100" src="img/popup.png">
 
 The extension also offers an overview of all supported companies. If automated actions are available, corresponding buttons are displayed on the company's entry. If clicked the data request page in question is opened in a new tab.
-<img align="right" width="100" height="100" src="img/overview">
+<img align="right" width="100" height="100" src="img/overview.png">
 
 ## The Architecture
 
 A WebExtension can contain 3 main components: A popup, shown to the user when they click on the extension icon; background \'pages\' running service workers for asynchronous, popup independent tasks; and content scripts, to be injected into webpages — able to access and modify the page's content. For a better understanding of the interactions and differing permissions between those components we can recommend the [Chrome Developer pages](https://developer.chrome.com/docs/extensions/mv3/architecture-overview/) and [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions) on WebExtensions, as well as this [YouTube playlist](https://shiffman.net/a2z/chrome-ext/).
-<img align="right" width="100" height="100" src="img/components">
+<img align="right" width="100" height="100" src="img/components.png">
 Following we will explain how we implemented the mentioned components in the Assistant context.
 
 ### Content Script
@@ -34,12 +34,12 @@ We first tried to go with a simpler setup, omitting a separate content script an
 
 ```ts
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-  console.log("Received message in content script.", message)
-  if (message.action) {
-    const { hostname } = new URL(window.location.href ?? "");
-    const connector:any = await Utils.getConnector(hostname);
-    connector[message.action]();
-  }
+    console.log("Received message in content script.", message)
+    if (message.action) {
+        const { hostname } = new URL(window.location.href ?? "");
+        const connector:any = await Utils.getConnector(hostname);
+        connector[message.action]();
+    }
 });
 ```
 
@@ -52,7 +52,7 @@ Our background script handles most of the logic of the extension. It consists ou
 
 - `message.download` is received when a content script has access to data to be directly downloaded by the user. Since content scripts can't use the `downloads.download` endpoint, we need to take the detour via the background script and send the created blob URL as `message.downloadUrl` for downloading.
 
-<img align="right" width="100" height="100" src="img/backgroundScript">
+<img align="right" width="100" height="100" src="img/backgroundScript.png">
 
 ### Popup
 The popup is build with React. Every time a user clicks on the icon a `getConnector` message is send to the background script. Depending on the response different parts are displayed in the popup. Utilizing the `&&` syntax:
@@ -67,7 +67,7 @@ If a received message includes a `connector` object, the actions and description
 
 For all variables which depend on an external source, like a message, we need to use Reacts `useState()` function. For the retrieved actions we use this line: 
 ```ts
-  const [actions, setActions] = React.useState<Array<string>>([]);
+const [actions, setActions] = React.useState<Array<string>>([]);
 ```
 and when we received a message we set the actions variable like this:
 ```tsx
