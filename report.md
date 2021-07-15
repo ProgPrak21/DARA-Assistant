@@ -10,7 +10,7 @@ So it was up to us, to create a hopefully useful and practical tool.
 
 ## First considerations
 
-When you plan to build a browser extension you quickly find that there is basically only one platform to use: the [WebExtensions](https://de.wikipedia.org/wiki/Browser_Extensions) framework, as it is supported by the fast majority of installed browsers. Only Safari as a quite widely used browser doesn't support the platform. Firefox and most of the Chrome derivates (like Opera) support it.
+When you plan to build a browser extension you quickly find that there is basically only one platform to use: the [WebExtensions](https://de.wikipedia.org/wiki/Browser_Extensions) framework, as it is supported by the fast majority of installed browsers. Only Safari, as a quite widely used browser, doesn't support the platform. Firefox and most of the Chrome derivates (like Opera) support it.
 
 **V2 vs V3?!.** We decided to first target Chrome as main reference browser to develop and test on and were confronted with the [manifest v2 vs v3](https://developer.chrome.com/docs/extensions/mv3/intro/) question. The Google Chrome developers specified a new version 3 of the WebExtension framework, and although we gave our best to use the new and shiny version, we just couldn't make it work for us (e.g. downloads through the extension seem to have issues still). And when we found out that Firefox wasn't supporting v3 yet, the decision for v2 was easy.
 
