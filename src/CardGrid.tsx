@@ -156,7 +156,7 @@ export default function CardGrid() {
           The DARA project was initiated 2021 during a programming course in the Computer Science Bachelor at TU-Berlin.
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Most of the descriptions displayed under "Show info" are retrieved from <Link color="primary" target="_blank" href="https://justgetmydata.com/#">JustGetMyData.com</Link>.
+          Most of the descriptions displayed under "Info" are retrieved from <Link color="primary" target="_blank" href="https://justgetmydata.com/#">JustGetMyData.com</Link>.
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
           Also check our <Link color="primary" target="_blank" href="https://dara-tuberlin.netlify.app/#solution">Analysis backend</Link>, it can help you to gain further insights into the requested Data.

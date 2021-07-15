@@ -1,7 +1,9 @@
-import { makeStyles, Grid, Card, CardActionArea, CardHeader, capitalize, Avatar, CardActions, Button, CardContent, Typography, Collapse } from "@material-ui/core";
+import { makeStyles, Grid, Card, CardActionArea, CardHeader, capitalize, Avatar, CardActions, Button, CardContent, Typography, Collapse, IconButton } from "@material-ui/core";
 import GetAppIcon from '@material-ui/icons/GetApp';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SendIcon from '@material-ui/icons/Send';
+import InfoIcon from '@material-ui/icons/Info';
+import clsx from 'clsx';
 
 import * as React from "react";
 
@@ -29,11 +31,16 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightRegular,
   },
   expand: {
+    marginLeft: 'auto'
+  },
+  expandIcon: {
+    transform: 'rotate(0deg)',
     transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest,
     }),
   },
-  expandOpen: {
+  expandIconOpen: {
+    transform: 'rotate(180deg)',
   },
 }));
 
@@ -42,7 +49,7 @@ const onClick = (action: string, hostnames: Array<string>) => {
   hostnames.forEach((el) => {
     const matcher = `*://${el}/`;
     hostnamesMatcher.push(matcher);
-  }) 
+  })
   chrome.permissions.request({
     permissions: ['tabs'],
     origins: hostnamesMatcher
@@ -77,7 +84,6 @@ export const Crd = ({ connector }: any) => {
                 //component: "h2"
               }}
               subheader="Data Request Page"
-
               avatar={
                 <Avatar
                   alt={capitalize(connector.name) + ' logo'}
@@ -87,20 +93,45 @@ export const Crd = ({ connector }: any) => {
             />
           </CardActionArea>
 
-          <Button
-            style={{
-              justifyContent: "left",
-              textTransform: "none"
-            }}
-            className={classes.expand}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-            fullWidth={true}
-            endIcon={<ExpandMoreIcon />}
-          >
-            <Typography align='left' >Show info</Typography>
-          </Button>
+          <CardActions disableSpacing>
+            {connector.actions.length > 0 &&
+              connector.actions.map((action: string) => (
+                <Button
+                  size="small"
+                  variant="text"
+                  style={{
+                    textTransform:'none',
+                  }}
+                  startIcon={
+                    action === "request" ? <SendIcon fontSize='inherit' />
+                      : action === "download" ? <GetAppIcon fontSize='inherit' />
+                        : <></>
+                  }
+                  onClick={() => onClick(action, connector.hostnames)}
+                >
+                  {capitalize(action)}
+                </Button>
+              ))
+            }
+            <Button
+              className={classes.expand}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+              style={{
+                textTransform:'none',
+              }}
+              endIcon={
+                <ExpandMoreIcon
+                  className={clsx(classes.expandIcon, {
+                    [classes.expandIconOpen]: expanded,
+                  })}
+                />
+              }
+            >
+              Info
+            </Button>
+          </CardActions>
 
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
@@ -114,24 +145,6 @@ export const Crd = ({ connector }: any) => {
             </CardContent>
           </Collapse>
 
-          {connector.actions &&
-            <CardActions>
-              {connector.actions.map((action: string) => (
-                <Button
-                  size="small"
-                  variant="text"
-                  startIcon={
-                    action === "request" ? <SendIcon fontSize='inherit' />
-                      : action === "download" ? <GetAppIcon fontSize='inherit' />
-                        : <></>
-                  }
-                  onClick={() => onClick(action, connector.hostnames)}
-                >
-                  {action}
-                </Button>
-              ))}
-            </CardActions>
-          }
 
         </Card>
       </Grid>

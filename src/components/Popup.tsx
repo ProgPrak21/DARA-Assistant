@@ -30,8 +30,12 @@ export const Popup = () => {
     });
   }, []);
 
-  const onClick = () => {
+  const onClickOverviewPage = () => {
     chrome.tabs.create({ url: chrome.runtime.getURL('overview.html'), active: true });
+  };
+  
+  const onClickRequestPage = () => {
+    chrome.tabs.update({ url: connector.requestUrl });
   };
 
   return (
@@ -46,6 +50,16 @@ export const Popup = () => {
           </Grid>
         }
 
+        {!actions.length && connector.requestUrl &&
+          <Button
+            variant='outlined'
+            onClick={onClickRequestPage}
+            fullWidth={true}
+          >
+            {connector.name} Request Page
+          </Button>
+        }
+
         {description &&
           <Grid item xs={12} className="Grid-item">
             <Typography variant='caption' align='justify'>
@@ -54,10 +68,9 @@ export const Popup = () => {
           </Grid>
         }
 
-        {actions &&
-          actions.map((action) =>
-            <Entry action={action} />
-          )
+        {actions.map((action) =>
+          <Entry action={action} />
+        )
         }
 
         {!support &&
@@ -72,7 +85,7 @@ export const Popup = () => {
 
             <Grid item xs={12} style={{ textAlign: "left" }}>
 
-              {connector.requestUrl &&
+              {connector.requestUrl && actions.length > 0 &&
                 <Button
                   variant='text'
                   style={{
@@ -92,7 +105,7 @@ export const Popup = () => {
                   textTransform: "none"
                 }}
                 size='small'
-                onClick={onClick}
+                onClick={onClickOverviewPage}
                 title=""
                 startIcon={<LinkIcon />}
               >
