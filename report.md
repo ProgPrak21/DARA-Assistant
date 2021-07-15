@@ -12,7 +12,7 @@ So it was up to us, to create a hopefully useful and practical tool.
 
 When you plan to build a browser extension you quickly find that there is basically only one platform to use: the [WebExtensions](https://de.wikipedia.org/wiki/Browser_Extensions) framework, as it is supported by the fast majority of installed browsers. Only Safari, as a quite widely used browser, doesn't support the platform. Firefox and most of the Chrome derivates (like Opera) support it.
 
-**V2 vs V3?!.** We decided to first target Chrome as main reference browser to develop and test on and were confronted with the [manifest v2 vs v3](https://developer.chrome.com/docs/extensions/mv3/intro/) question. The Google Chrome developers specified a new version 3 of the WebExtension framework, and although we gave our best to use the new and shiny version, we just couldn't make it work for us (e.g. downloads through the extension seem to have issues still). And when we found out that Firefox wasn't supporting v3 yet, the decision for v2 was easy.
+**V2 vs V3?!** We decided to first target Chrome as main reference browser to develop and test on and were confronted with the [manifest v2 vs v3](https://developer.chrome.com/docs/extensions/mv3/intro/) question. The Google Chrome developers specified a new version 3 of the WebExtension framework, and although we gave our best to use the new and shiny version, we just couldn't make it work for us (e.g. downloads through the extension did not work). And when we found out that Firefox wasn't supporting v3 yet, the decision for v2 was easy.
 
 **TypeScript and React.** Browser extensions are written per default in JavaScript and follow a quite [clear structure](https://developer.chrome.com/docs/extensions/mv3/architecture-overview/). Mere out of curiosity than real necessity, we headed for a React and TypeScript based approach. There are well written [guides](https://medium.com/swlh/how-to-build-a-chrome-extension-with-react-typescript-and-webpack-92e806ce2e16), [boilerplates](https://github.com/pixochi/create-react-chrome-extension-ts) and [whole toolkits](https://www.extend-chrome.dev/) for this task. Still, it is a trade-off adding complexity and little annoyances like a longer compile time to your project.
 
@@ -23,7 +23,7 @@ When you plan to build a browser extension you quickly find that there is basica
 Generally our extension should enable the following flow: A Person interested in requesting their data visits a company's website, they click on the assistant icon and get offered the available options for this company — if an automated request is available, a request button is displayed. After clicking the button the extension takes over, opens the corresponding data request page and injects the necessary clicks to send of the data request.  
   
 
-The extension also offers an overview of all supported companies. If automated actions are available, corresponding buttons are displayed on the company's entry. If clicked the data request page in question is opened in a new tab.
+The extension also offers an overview of all supported companies. If automated actions are available, corresponding buttons are displayed on the company's entry. When clicked, the data request page in question is opened in a new tab.
 
 <img align="center" src="img/overview.png">
 
