@@ -4,9 +4,9 @@ So we got together as a group to tackle the problem of simplifying data access r
 In our first phase of researching the topic we found some projects doing quite similar things: [aeon](https://aeon.technology/) manages data access requests very well — also offering some visualization of the data requested. We borrowed many ideas from aeon, but still decided to take another technical approach: Their app is based on electron and is a classical desktop app — we wanted to build something a bit easier to access, where we don't have to take care of the deploying and updating infrastructure and ended up with the browser extension platform. In this domain we also found some projects close to our vision:
 
 - There is [udaptor.io](https://chrome.google.com/webstore/detail/data-access-assistant-cla/dkjggcigbjhapffcjbmbgbbffgobfeol?hl=de), a very promising browser extension, doing exactly what we want! Unfortunately it seems to be abandoned, of the few companies supported (6) barely any actually work. Sadly their code is not open source, otherwise we maybe could have fixed those issues and build upon their work.
-- And there is the [Opt Out-tool](https://chrome.google.com/webstore/detail/opt-out-send-gdpr-and-ccp/dedldhojjkgbejnmmfpmbnbihmmpfbpd?hl=de), this extension is basically a link to a data access request email generator. Nothing interessting to see here.
+- And there is the [Opt Out-tool](https://chrome.google.com/webstore/detail/opt-out-send-gdpr-and-ccp/dedldhojjkgbejnmmfpmbnbihmmpfbpd?hl=de), this extension is basically a link to a data access request email generator. Nothing interesting to see here.
 
-So it was up to us to create a hopefully useful and practical tool.
+So it was up to us, to create a hopefully useful and practical tool.
 
 ## First considerations
 
