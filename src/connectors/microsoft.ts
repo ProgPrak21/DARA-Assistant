@@ -7,9 +7,9 @@ export const actions = ['request'];
 export const description = "To download data from apps like OneDrive and Microsoft Teams, seperate requests must be send.";
 
 export const request = async() => {
-    (await Utils.waitForElement("button[data-bi-id='privacy.download-your-data.create-archive']"))?.click();
-    (await Utils.waitForElements("i[data-icon-name='CheckMark']")).forEach((el: any) => el.click());
-    (await Utils.waitForElement("button[data-bi-id='privacy.download-your-data.dialog.create-archive']"))?.click();
+    (await Utils.observeQuerySelector("button[data-bi-id='privacy.download-your-data.create-archive']"))?.click();
+    (await Utils.observeQuerySelectorAll("i[data-icon-name='CheckMark']")).forEach((el: any) => el.click());
+    (await Utils.observeQuerySelector("button[data-bi-id='privacy.download-your-data.dialog.create-archive']"))?.click();
 
     Utils.sendSuccess();
 };

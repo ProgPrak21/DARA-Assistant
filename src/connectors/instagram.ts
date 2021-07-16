@@ -9,7 +9,7 @@ export const description = "";
 
 export const request = async () => {
 
-    const radio = await Utils.waitForElement("[id='igCoreRadioButtonoutputFormatJSON']");
+    const radio = await Utils.observeQuerySelector("[id='igCoreRadioButtonoutputFormatJSON']");
     if (radio) {
         (<any>document.getElementById('igCoreRadioButtonoutputFormatJSON')).checked = true;
         (<any>document.querySelector('form > div > button')).click();

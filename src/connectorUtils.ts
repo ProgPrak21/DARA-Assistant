@@ -4,7 +4,7 @@ export function pause(time: number) {
   );
 }
 
-export function waitForElement(selector: string) {
+export function observeQuerySelector(selector: string) {
   return new Promise<HTMLElement | undefined>(function (resolve, reject) {
     let el = document.querySelector<HTMLElement>(selector);
     if (el) { resolve(el); }
@@ -30,7 +30,7 @@ export function waitForElement(selector: string) {
   });
 }
 
-export function waitForElements(selector: string) {
+export function observeQuerySelectorAll(selector: string) {
   return new Promise<any | null>(function (resolve, reject) {
     let el = Array.from(document.querySelectorAll<HTMLElement>(selector));
     el.forEach((element) => {

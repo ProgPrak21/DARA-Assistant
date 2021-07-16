@@ -7,8 +7,8 @@ export const actions = ['request'];
 export const description = "Spotify does a bot check which requires user interaction.";
 
 export const request = async() => {
-    let btn1 = await Utils.waitForElement('button[data-testid="download-step-1-button"]');
-    let btn2 = await Utils.waitForElement('button[data-testid="resend-confirmation-email"]');
+    let btn1 = await Utils.observeQuerySelector('button[data-testid="download-step-1-button"]');
+    let btn2 = await Utils.observeQuerySelector('button[data-testid="resend-confirmation-email"]');
 
     if (btn1) {
         btn1?.click();

@@ -42,6 +42,6 @@ export const description = '';
  * informing the user about the completed injection.
  */
 export const request = async () => {
-    (await Utils.waitForElement(''))?.click();
+    (await Utils.observeQuerySelector(''))?.click();
     Utils.sendSuccess();
 };

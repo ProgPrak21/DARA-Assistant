@@ -15,10 +15,10 @@ export const request = async () => {
         chrome.runtime.sendMessage({ actionResponse: "Your last data request is still pending." });
     } else if(b) {
         b?.click();
-        (await Utils.waitForElement("button.itSarSubmit,btn[type='button'][aria-describedby='selectReportValidationTxt']"))?.click();
+        (await Utils.observeQuerySelector("button.itSarSubmit,btn[type='button'][aria-describedby='selectReportValidationTxt']"))?.click();
         chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
     } else {
-        (await Utils.waitForElement("button.itSarSubmit,btn[type='button'][aria-describedby='selectReportValidationTxt']"))?.click();
+        (await Utils.observeQuerySelector("button.itSarSubmit,btn[type='button'][aria-describedby='selectReportValidationTxt']"))?.click();
         chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
     }
 

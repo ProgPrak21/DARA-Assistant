@@ -8,10 +8,10 @@ export const description = "";
 
 export const request = async() => {
     Utils.pause(500);
-    (await Utils.waitForElements("c-wiz > div > div > div > div > button"))[0]?.click();
-    console.log('Clicked', (await Utils.waitForElements("c-wiz > div > div > div > div > button"))[0] )
+    (await Utils.observeQuerySelectorAll("c-wiz > div > div > div > div > button"))[0]?.click();
+    console.log('Clicked', (await Utils.observeQuerySelectorAll("c-wiz > div > div > div > div > button"))[0] )
     Utils.pause(200);
-    (await Utils.waitForElements("c-wiz > div > div > div > div > button"))[1]?.click();
+    (await Utils.observeQuerySelectorAll("c-wiz > div > div > div > div > button"))[1]?.click();
     Utils.pause(200);
     Utils.sendSuccess();
 };

@@ -7,6 +7,6 @@ export const actions = ['request'];
 export const description = "";
 
 export const request = async() => {
-    (await Utils.waitForElement("td.but02>a#dakoLink"))?.click();
+    (await Utils.observeQuerySelector("td.but02>a#dakoLink"))?.click();
     chrome.runtime.sendMessage({ actionResponse: "Please enter your data." });
 };

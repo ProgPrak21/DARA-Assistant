@@ -12,9 +12,9 @@ export const request = async () => {
     if (state?.innerText.includes('Download pending')) {
         chrome.runtime.sendMessage({ actionResponse: "Your last data request is still pending." });
     } else {
-        (await Utils.waitForElement("a[aria-controls='setting-member-data-content']"))?.click();
-        (await Utils.waitForElement("input[id='fast-file-only-plus-other-data']"))?.click();
-        (await Utils.waitForElement("button.request-archive-btn,single-file-take-out-btn[id='download-button]"))?.click();
+        (await Utils.observeQuerySelector("a[aria-controls='setting-member-data-content']"))?.click();
+        (await Utils.observeQuerySelector("input[id='fast-file-only-plus-other-data']"))?.click();
+        (await Utils.observeQuerySelector("button.request-archive-btn,single-file-take-out-btn[id='download-button]"))?.click();
         chrome.runtime.sendMessage({ actionResponse: "You requested your data." });
     }
 };

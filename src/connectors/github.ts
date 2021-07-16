@@ -24,7 +24,7 @@ export const request = async () => {
     }
     */
 
-    const btn = await Utils.waitForElement("form>input.btn[type='submit']")
+    const btn = await Utils.observeQuerySelector("form>input.btn[type='submit']")
     if (btn?.hasAttribute('disabled')){
         Utils.sendPending();
     } else {

@@ -12,14 +12,14 @@ export const description = "Facebook allows us to download a data archive after 
 
 export const requestNew = async () => {
   
-  (await Utils.waitForElements("div[aria-disabled='false']"))[1]?.click();
-  (await Utils.waitForElements("div span"))?.find(
+  (await Utils.observeQuerySelectorAll("div[aria-disabled='false']"))[1]?.click();
+  (await Utils.observeQuerySelectorAll("div span"))?.find(
     (e: { textContent: string; }) => e.textContent === "JSON"
   )?.click();
 
-  (await Utils.waitForElement("div span div div"))?.click();
-  (await Utils.waitForElement("input[value='all_time']"))?.click();
-  (await Utils.waitForElements("div span div div"))?.find(
+  (await Utils.observeQuerySelector("div span div div"))?.click();
+  (await Utils.observeQuerySelector("input[value='all_time']"))?.click();
+  (await Utils.observeQuerySelectorAll("div span div div"))?.find(
     (e: { textContent: string; }) => e.textContent === "Update"
   )?.click();
 

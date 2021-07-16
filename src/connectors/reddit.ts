@@ -8,17 +8,17 @@ export const description = "";
 
 export const request = async () => {
 
-    const btn: any = await Utils.waitForElement("fieldset button[role='button']");
+    const btn: any = await Utils.observeQuerySelector("fieldset button[role='button']");
     if (!btn?.hasAttribute('disabled')) {
         // Select GDPR
-        // (await Utils.waitForElement("form fieldset input[type='hidden']"))?.setAttribute('value', 'GDPR');
-        (await Utils.waitForElement("fieldset div[aria-label='privacyLaws'] div[aria-checked]"))?.click();
+        // (await Utils.observeQuerySelector("form fieldset input[type='hidden']"))?.setAttribute('value', 'GDPR');
+        (await Utils.observeQuerySelector("fieldset div[aria-label='privacyLaws'] div[aria-checked]"))?.click();
 
         // Select full time frame
-        (await Utils.waitForElements("fieldset div[aria-label='exportRange'] div[role='radio']"))[1]?.click();
+        (await Utils.observeQuerySelectorAll("fieldset div[aria-label='exportRange'] div[role='radio']"))[1]?.click();
         
         // Issue request
-        //(<any>(await Utils.waitForElement("form")))?.submit();
+        //(<any>(await Utils.observeQuerySelector("form")))?.submit();
         btn.click();
         
         Utils.sendSuccess();
