@@ -21,8 +21,8 @@ export const request = async () => {
         //(<any>(await Utils.observeQuerySelector("form")))?.submit();
         btn.click();
         
-        Utils.sendSuccess();
+        Utils.sendMessageSuccess();
     } else {
-        Utils.sendPending();
+        Utils.sendMessagePending();
     }
 };

@@ -13,5 +13,5 @@ export const request = async () => {
   (await Utils.observeQuerySelector("a[id='aedu-dsar-data-categories-dropdown_15']"))?.click();
   await Utils.pause(200);
   (await Utils.observeQuerySelector("input.a-button-input[aria-labelledby='aedu-dsar-create-btn-announce']"))?.click();
-  Utils.sendSuccess();
+  Utils.sendMessageSuccess();
 };

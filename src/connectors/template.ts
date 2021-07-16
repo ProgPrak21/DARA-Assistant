@@ -38,10 +38,10 @@ export const description = '';
  * via requestUrl. Some helper functions have been imported 
  * from connectorUtils.ts, maybe they are useful to you. 
  * When the code has successfully executed, 
- * you can end the function with Utils.sendSuccess();, 
+ * you can end the function with Utils.sendMessageSuccess();, 
  * informing the user about the completed injection.
  */
 export const request = async () => {
     (await Utils.observeQuerySelector(''))?.click();
-    Utils.sendSuccess();
+    Utils.sendMessageSuccess();
 };

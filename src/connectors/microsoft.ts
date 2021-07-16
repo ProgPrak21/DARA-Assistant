@@ -11,5 +11,5 @@ export const request = async() => {
     (await Utils.observeQuerySelectorAll("i[data-icon-name='CheckMark']")).forEach((el: any) => el.click());
     (await Utils.observeQuerySelector("button[data-bi-id='privacy.download-your-data.dialog.create-archive']"))?.click();
 
-    Utils.sendSuccess();
+    Utils.sendMessageSuccess();
 };

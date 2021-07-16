@@ -8,5 +8,5 @@ export const description = "";
 
 export const request = async() => {
     (await Utils.observeQuerySelector("section[aria-labelledby='detail-header']>div>div>div[role='button'][tabindex='0']"))?.click();
-    Utils.sendSuccess();
+    Utils.sendMessageSuccess();
 };

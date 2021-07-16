@@ -13,5 +13,5 @@ export const request = async() => {
     Utils.pause(200);
     (await Utils.observeQuerySelectorAll("c-wiz > div > div > div > div > button"))[1]?.click();
     Utils.pause(200);
-    Utils.sendSuccess();
+    Utils.sendMessageSuccess();
 };

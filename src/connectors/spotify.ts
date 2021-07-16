@@ -12,8 +12,8 @@ export const request = async() => {
 
     if (btn1) {
         btn1?.click();
-        Utils.sendSuccess();
+        Utils.sendMessageSuccess();
     } else if(btn2) {
-        Utils.sendPending();
+        Utils.sendMessagePending();
     }
 };

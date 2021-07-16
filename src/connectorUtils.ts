@@ -90,14 +90,14 @@ export const execInIframe = async (fun: Function) => {
   }
 }
 
-export function sendPending() {
+export function sendMessagePending() {
   chrome.runtime.sendMessage({ actionResponse: "⏳ A previous request is still pending." });
 }
 
-export function sendSuccess() {
+export function sendMessageSuccess() {
   chrome.runtime.sendMessage({ actionResponse: "🎉 You just requested your data." });
 }
 
-export function send(input: string) {
+export function sendMessage(input: string) {
   chrome.runtime.sendMessage({ actionResponse: input });
 }

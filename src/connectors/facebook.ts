@@ -23,7 +23,7 @@ export const requestNew = async () => {
     (e: { textContent: string; }) => e.textContent === "Update"
   )?.click();
 
-  Utils.sendSuccess();
+  Utils.sendMessageSuccess();
 };
 */
 
@@ -48,7 +48,7 @@ export const request = () => {
 
     // Click on Create File button
     (<HTMLElement>iframe.contentWindow.document.body.querySelectorAll("button[aria-disabled]")[0])?.click?.();
-    Utils.sendSuccess();
+    Utils.sendMessageSuccess();
   }
 
   Utils.execInIframe(execRequest);
@@ -72,9 +72,9 @@ export const download = () => {
 
     if (downloadBtn !== undefined) {
       downloadBtn.click();
-      Utils.send("Your data request is ready to download.");
+      Utils.sendMessage("Your data request is ready to download.");
     } else if (!pending === undefined) {
-      Utils.sendPending();
+      Utils.sendMessagePending();
     }
   }
 
