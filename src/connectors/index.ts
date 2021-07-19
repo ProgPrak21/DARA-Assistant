@@ -12,6 +12,7 @@ export * as reddit from './reddit'
 export * as microsoft from './microsoft'
 export * as google from './google'
 export * as spotify from './spotify'
+export * as tumblr from './tumblr'
 
 export interface DaraConnector {
   name: string;
