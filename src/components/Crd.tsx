@@ -50,8 +50,11 @@ const onClick = (action: string, hostnames: Array<string>) => {
     const matcher = `*://${el}/`;
     hostnamesMatcher.push(matcher);
   })
+  let permissions = ['tabs'];
+  if (action === 'download')
+    permissions.push('downloads')
   chrome.permissions.request({
-    permissions: ['tabs'],
+    permissions: permissions,
     origins: hostnamesMatcher
   }, function (granted) {
     // The callback argument will be true if the user granted the permissions.

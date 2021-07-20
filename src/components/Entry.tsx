@@ -3,7 +3,20 @@ import { Button, Grid, Typography } from "@material-ui/core";
 
 export const Entry = ({ action }: { action: string }) => {
   const onClick = () => {
-    chrome.runtime.sendMessage({ action: action });
+    if (action === 'download') {
+      chrome.permissions.request({
+        permissions: ['downloads']
+      }, function (granted) {
+        // The callback argument will be true if the user granted the permissions.
+        if (granted) {
+          chrome.runtime.sendMessage({ action: action });
+        } else {
+          chrome.runtime.sendMessage({ actionResponse: "No sufficient permissions to download." });
+        }
+      });
+    } else {
+      chrome.runtime.sendMessage({ action: action });
+    }
   };
 
   return (

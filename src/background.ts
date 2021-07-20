@@ -75,8 +75,10 @@ const handleGetConnector = async () => {
 }
 
 const handleDownload = async (message: any) => {
+  const blob = new Blob([message.downloadJson], { type: 'text/json;charset=utf-8m' });
+  const url = URL.createObjectURL(blob);
   chrome.downloads.download({
-    url: message.downloadUrl,
+    url: url,
     filename: message.downloadName,
   });
   chrome.runtime.sendMessage({ actionResponse: "Your Download is ready." });

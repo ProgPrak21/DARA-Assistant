@@ -49,6 +49,4 @@ export const request = async () => {
     } else {
         Utils.sendMessagePending();
     }
-
-    
 };

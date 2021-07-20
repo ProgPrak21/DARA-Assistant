@@ -45,23 +45,26 @@ export const download = async () => {
     ]
     // Fetch the data from the instagram API
     // Now we do all API requests in order to retrieve the data
+    
     let responses = await Promise.all(
-        scrapingUrls.map(url =>
-            fetch(url).then(response => response.json())
+        scrapingUrls.flatMap(async (url) =>
+            fetch(url)
         )
+    );
+    responses = responses.filter((response) => response.ok);
+    responses = await Promise.all(
+        responses.map(response => response.json())
     );
 
     // We transform the data so that we can return it as json
-    responses = responses.map(response => {
+    const responsesFormatted = responses.map((response: any) => {
         return {
             data_category: response.page_name,
             data: response.data.data
         };
     });
-    const responsesJson = JSON.stringify(responses, null, 4);
+    const responsesStringified = JSON.stringify(responsesFormatted, null, 4);
 
     // For now we can offer a download:
-    let blob = new Blob([responsesJson], { type: 'text/json;charset=utf-8m' });
-    let url = URL.createObjectURL(blob);
-    chrome.runtime.sendMessage({ download: true, downloadUrl: url, downloadName: 'instagram_data.json' });
+    chrome.runtime.sendMessage({ download: true, downloadJson: responsesStringified, downloadName: 'instagram_data.json' });
 }

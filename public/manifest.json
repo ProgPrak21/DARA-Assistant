@@ -20,6 +20,6 @@
   "background": {
     "scripts": ["background.js"]
   },
-  "permissions": ["activeTab", "downloads", "storage"],
-  "optional_permissions": ["tabs", "*://*/"]
+  "permissions": ["activeTab", "storage"],
+  "optional_permissions": ["tabs", "downloads", "*://*/"]
 }
