@@ -2,7 +2,7 @@
   "name": "DARA Assistant",
   "description": "A browser extension to help you to request your data.",
   "manifest_version": 2,
-  "version": "0.0.9",
+  "version": "0.0.10",
   "icons": {
     "16": "icon-16.png",
     "32": "icon-32.png",
