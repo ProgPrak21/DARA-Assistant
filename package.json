@@ -18,7 +18,7 @@
     "@types/react": "^17.0.15",
     "@types/react-dom": "^17.0.9",
     "babel-loader": "^8.1.0",
-    "chrome-types": "^0.1.25",
+    "chrome-types": "^0.1.35",
     "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^6.2.0",
     "file-loader": "^6.1.1",
